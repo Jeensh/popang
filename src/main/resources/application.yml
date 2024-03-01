@@ -1,0 +1,32 @@
+# JSP 경로 설정
+spring:
+  mvc:
+    view:
+      prefix: '/WEB-INF/views/'
+      suffix: '.jsp'
+
+# DB 설정
+  output.ansi.enabled: always
+  datasource:
+    url: 'jdbc:mysql://localhost:3306/popang'
+    username: 'root'
+    password: '0000'
+    driver-class-name: 'com.mysql.cj.jdbc.Driver'
+
+  jpa:
+    database: mysql
+    generate-ddl: false
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100
+    open-in-view: false
+
+# 시큐리티 설정
+  security:
+    user:
+      name: 'a'
+      password: '1'
+# 로그 설정
+logging.level:
+  org.hibernate.SQL: debug

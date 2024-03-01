@@ -1,0 +1,53 @@
+/* 로그인 페이지 */
+.login-section{
+    display: flex;
+    justify-content: center;
+    align-items: center; /* 세로축 중앙 정렬 */
+    height: 100vh; /* 화면 전체 높이를 가짐 */
+}
+
+.login-banner{
+    display: flex;
+    justify-content: center;
+    align-items: center; /* 세로축 중앙 정렬 */
+    margin-bottom: 2vw;
+}
+
+.login-section-footer{
+    display: flex;
+    justify-content: center;
+    font-size: small;
+    color: dodgerblue;
+}
+
+/* 회원가입 페이지 */
+.register-section{
+    display: flex;
+    justify-content: center;
+}
+
+.register-banner{
+    display: flex;
+    justify-content: center;
+    margin-top: 2vw;
+}
+
+.register-banner-image{
+    height: 50%;
+    width: 50%;
+}
+
+.register-form-content{
+    margin-top: 3vw;
+}
+
+.register-icon{
+    width: 1.3em;
+    height: 1.3em;
+}
+
+.register-section-footer{
+    display: flex;
+    font-size: small;
+    color: dodgerblue;
+}
