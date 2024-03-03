@@ -26,16 +26,35 @@ public class PopangSecurityConfig {
          *
          */
 
-        http.authorizeHttpRequests( (requests) -> requests
+//        http.authorizeHttpRequests( (requests) -> requests
+//                        .requestMatchers("/error").permitAll()
+//                        .requestMatchers("/", "/user/auth","/user/register").permitAll()
+//                        .requestMatchers("/WEB-INF/views/index.jsp", "/WEB-INF/views/user/**").permitAll()
+//                        .requestMatchers("/css/**", "/images/**").permitAll()
+//                        .anyRequest().authenticated())
+//                .formLogin(formLogin -> formLogin
+//                        .loginPage("/")
+//                        .loginProcessingUrl("/user/auth")
+//                        .usernameParameter("id")
+//                        .passwordParameter("password")
+//                        .defaultSuccessUrl("/main")
+//                        .permitAll())
+//                .logout(logout -> logout
+//                        .logoutUrl("/logout")
+//                        .permitAll())
+//                .csrf(AbstractHttpConfigurer::disable);
+
+        http.authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/error").permitAll()
+                        .requestMatchers("/**").permitAll()
                         .anyRequest().permitAll())
                 .formLogin(formLogin -> formLogin
                         .loginPage("/")
                         .loginProcessingUrl("/user/auth")
                         .usernameParameter("id")
                         .passwordParameter("password")
-                        .defaultSuccessUrl("/board/showAll/1")
-                        .failureForwardUrl("/"))
+                        .defaultSuccessUrl("/main")
+                        .permitAll())
                 .csrf(AbstractHttpConfigurer::disable);
 
         return http.build();

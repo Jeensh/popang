@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -20,7 +21,7 @@ public class UserDTO implements UserDetails {
     private String name;
     private Long role;
     private Long grade;
-    private Date signupDate;
+    private Timestamp signupDate;
     List<Address> addressList = new ArrayList<>();
     List<Coupon> constructedCoupons = new ArrayList<>();
     List<Coupon> coupons = new ArrayList<>();

@@ -3,9 +3,10 @@
 <%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <html>
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/css/pospang.css">
+    <script type="text/javascript" src="/js/jquery-3.7.1.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
     <title>로그인</title>
 </head>
 <body>

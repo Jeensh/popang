@@ -70,4 +70,19 @@ public class UserController {
             return false;
         }
     }
+
+//    테스트 데이터용
+//    @GetMapping("test")
+//    public String test(){
+//        for(int i = 1; i <= 300; i++){
+//            UserDTO user = new UserDTO();
+//            user.setId(i + "번테스트유저");
+//            user.setPassword("1234");
+//            user.setGrade(1L);
+//            user.setName(i + "번유저");
+//            user.setRole(1L);
+//            userService.register(user);
+//        }
+//        return "redirect:/main";
+//    }
 }

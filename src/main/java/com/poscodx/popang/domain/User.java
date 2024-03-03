@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class User {
     private Long role;
     private Long grade;
     @Column(name = "signup_date")
-    private Date signupDate;
+    private Timestamp signupDate;
 
     @OneToMany(mappedBy = "user")
     List<Address> addressList = new ArrayList<>();

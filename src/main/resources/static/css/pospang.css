@@ -1,3 +1,13 @@
+/* 전체 */
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+body{
+    margin: 0;
+    font-family: "Jua", sans-serif;
+    font-weight: 100;
+    font-style: normal;
+}
+
 /* 로그인 페이지 */
 .login-section{
     display: flex;
@@ -50,4 +60,135 @@
     display: flex;
     font-size: small;
     color: dodgerblue;
+}
+
+/*navbar*/
+.nav-bar-logo{
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.nav-bar-logo-container{
+    height: 100%;
+}
+
+.input-search{
+    width: 100%;
+}
+
+.nav-bar-icon{
+    width: 2em;
+    height: 2em;
+}
+
+.nav-item:hover .nav-bar-icon {
+    transform: scale(1.1); /* 이미지 크기를 1.1배로 확대합니다. */
+    transition:all 0.1s ease-in-out;
+}
+
+.search-section{
+    display: flex;
+}
+
+.search-form-section{
+    width: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* 세로축 중앙 정렬 */
+}
+
+.search-form{
+    margin-top: 1em;
+    margin-left: 0;
+    margin-right: 0;
+    display: flex;
+    align-items: center;
+}
+
+.nav-item-section{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    width: 20%;
+}
+
+.nav-item{
+    margin-left: 1em;
+}
+
+.nav-bar-search-icon{
+    width: 1.5em;
+    height: 1.5em;
+}
+
+.nav-bar-menu{
+    width: 3em;
+    height: 3em;
+}
+
+/*메인화면(관리자, 판매자)*/
+.main-body-section{
+    display: flex;
+    justify-content: center;
+}
+
+.main-body{
+    width: 60%;
+    height: 100%;
+}
+
+.main-title-section{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-content-section{
+    margin-bottom: 5px;
+}
+
+.main-link-list{
+    display: flex;
+    justify-content: center;
+}
+
+.link-item-wrapper{
+    margin: 1%;
+    margin-top: 1%;
+    padding: 1%;
+    width: 30%;
+    border-radius: 5px;
+    border-width: medium;
+}
+
+.link-item-wrapper:hover .link-item-icon {
+    transform: scale(1.1); /* 이미지 크기를 1.1배로 확대합니다. */
+    transition:all 0.15s ease-in-out;
+}
+
+.link-item-icon-section{
+    display: flex;
+    justify-content: center;
+}
+
+.link-item-icon{
+    width: 5em;
+    height: 5em;
+}
+
+.link-item-text{
+    margin-top: 2%;
+    text-align: center;
+}
+
+/* (관리자) 유저 관리 페이지 */
+.user-management-content-section{
+    display: flex;
+    justify-content: center;
+}
+
+.user-table{
+    width: 95%;
+    text-align: center;
 }
