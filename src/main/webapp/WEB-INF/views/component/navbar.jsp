@@ -14,8 +14,8 @@
                                                                        src="/images/icon/search.png"></button>
         </form>
         <div class="nav-item-section ms-4">
-            <a class="nav-item" aria-current="page" href="#"><img class="nav-bar-icon"
-                                                                  src="/images/icon/myPage.png"></a>
+            <a class="nav-item" href="/logout"><img class="nav-bar-icon" src="/images/icon/empty_cart.png"></a>
+            <a class="nav-item" aria-current="page" href="#"><img class="nav-bar-icon" src="/images/icon/myPage.png"></a>
             <a class="nav-item" href="/logout"><img class="nav-bar-icon" src="/images/icon/logout.png"></a>
         </div>
     </section>
