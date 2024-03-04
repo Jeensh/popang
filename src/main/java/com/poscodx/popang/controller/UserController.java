@@ -47,7 +47,7 @@ public class UserController {
         // id 검증
         if (userDTO.getId().isEmpty())
             messages.add(count++ + ". " + "아이디를 입력해주세요\n");
-        if (userService.loadUserByUsername(userDTO.getId()) != null)
+        if (((UserDTO)userService.loadUserByUsername(userDTO.getId())).getId() != null)
             messages.add(count++ + ". " + "이미 존재하는 아이디입니다.\n");
         // pw 검증
         if (userDTO.getPassword().isEmpty())
@@ -76,11 +76,12 @@ public class UserController {
 //    public String test(){
 //        for(int i = 1; i <= 300; i++){
 //            UserDTO user = new UserDTO();
-//            user.setId(i + "번테스트유저");
+//            user.setId(String.valueOf(i));
 //            user.setPassword("1234");
 //            user.setGrade(1L);
 //            user.setName(i + "번유저");
 //            user.setRole(1L);
+//            user.setTel("01012345678");
 //            userService.register(user);
 //        }
 //        return "redirect:/main";

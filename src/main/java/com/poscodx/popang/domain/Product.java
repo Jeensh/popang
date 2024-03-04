@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class Product {
     private Long stock;
     private String description;
     private String descriptionDetail;
-    private Date uploadDate;
+    private Timestamp uploadDate;
 
     @OneToMany(mappedBy = "product")
     private List<Reply> replyList = new ArrayList<>();

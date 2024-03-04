@@ -16,9 +16,10 @@ public class ProductCategory {
     @Id
     private Long code;
     private String name;
+    private Long depth;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ref_code")
+    @JoinColumn(name = "parent_code")
     private ProductCategory parentCategory;
 
     @OneToMany(mappedBy = "parentCategory")

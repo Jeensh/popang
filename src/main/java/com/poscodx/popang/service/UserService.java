@@ -37,10 +37,6 @@ public class UserService implements UserDetailsService {
         return userDTO;
     }
 
-    public void deleteUserById(String id){
-        userRepository.deleteUserById(id);
-    }
-
     public Page<UserDTO> findAllByPage(Pageable pageable) {
         return userRepository.findAllUserByOrderBySignupDateDesc(pageable)
                 .map(user -> {
@@ -48,6 +44,25 @@ public class UserService implements UserDetailsService {
                     userDTO.setByUserEntity(user);
                     return userDTO;
                 });
+    }
+
+    @Transactional
+    public void changeGrade(String id, Long grade){
+        User user = userRepository.findUserById(id);
+        user.setGrade(grade);
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void resetPassword(String id){
+        User user = userRepository.findUserById(id);
+        user.setPassword(ENCODER.encode("1234"));
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void deleteUserById(String id){
+        userRepository.deleteById(id);
     }
 
     @Transactional

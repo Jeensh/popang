@@ -31,12 +31,12 @@
                     </a>
                 </div>
                 <div class="link-item-wrapper bg-body-secondary col-lg-4 col-md-4 col-sm-6 col-12 border">
-                    <a href="#">
+                    <a href="/admin/category/management">
                         <div class="link-item-icon-section">
                             <img class="link-item-icon" src="/images/icon/category.png">
                         </div>
                         <div class="link-item-text">
-                            <h5>카테고리 추가(미완)</h5>
+                            <h5>카테고리 추가</h5>
                         </div>
                     </a>
                 </div>

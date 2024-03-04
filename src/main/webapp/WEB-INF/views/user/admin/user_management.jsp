@@ -34,10 +34,10 @@
                 </tr>
                 <c:forEach items="${userList}" var="user">
                     <tr>
-                        <td>${user.id}</td>
-                        <td>${user.name}</td>
-                        <td>${user.tel}</td>
-                        <td style="color: midnightblue">
+                        <td class="user-id">${user.id}</td>
+                        <td class="user-name">${user.name}</td>
+                        <td class="user-tel">${user.tel}</td>
+                        <td class="user-role" style="color: midnightblue">
                             <c:choose>
                                 <c:when test="${user.role == 1}">사용자</c:when>
                                 <c:when test="${user.role == 2}">판매자</c:when>
@@ -45,11 +45,11 @@
                             </c:choose>
                         </td>
                         <td>
-                            <select class="form-select form-select">
+                            <select class="user-grade form-select">
                                 <option value="1" ${user.grade == 1 ? 'selected' : ''}>BRONZE</option>
                                 <option value="2" ${user.grade == 2 ? 'selected' : ''}>SILVER</option>
                                 <option value="3" ${user.grade == 3 ? 'selected' : ''}>GOLD</option>
-                                <option value="4" ${user.grade == 3 ? 'selected' : ''}>VIP</option>
+                                <option value="4" ${user.grade == 4 ? 'selected' : ''}>VIP</option>
                             </select>
                         </td>
                         <td>${user.signupDate}</td>
@@ -87,29 +87,5 @@
         </nav>
     </section>
 </section>
-
-<script>
-    $().ready(() => {
-        $(".delete-btn").click(function () {
-            Swal.fire({
-                title: '정말 삭제 하시겠습니까?',
-                text: "다시 되돌릴 수 없습니다. 신중하세요.",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: '승인',
-                cancelButtonText: '취소',
-            }).then((result) => {
-                if(result.isConfirmed){
-                    Swal.fire({
-                        title: '삭제가 완료되었습니다.',
-                        icon: 'success',
-                    })
-                }
-            })
-        })
-    })
-</script>
 </body>
 </html>

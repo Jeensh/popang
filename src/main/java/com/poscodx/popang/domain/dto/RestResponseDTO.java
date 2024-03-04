@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class RestResponseDTO {
-    private boolean result;
+    private boolean success;
     private String message;
 }

@@ -42,6 +42,9 @@ public class AdminUserController {
         model.addAttribute("currentPage", pageNumber);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
+
+        if(pageNumber > totalPage)
+            return "redirect:/admin/user/management?pageNumber=" + totalPage;
         return "user/admin/user_management";
     }
 }
