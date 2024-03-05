@@ -127,6 +127,78 @@ body{
     height: 3em;
 }
 
+/* (navbar) 트리 메뉴 */
+/*메뉴트리 영역설정*/
+.menu_tree_management {
+    border: 1px solid #f1f1f1;
+    display: inline-block;
+    box-sizing: border-box;
+}
+
+/*타이틀 스타일링 */
+.menu_tree_management .title {
+    height: 18px;
+    line-height: 18px;
+    margin-bottom: 10px;
+    font-size: 25px;
+    font-weight: 700;
+}
+
+/* 메뉴트리 영역*/
+.tree{
+
+}
+.tree, .tree ul{
+    list-style: none; /* 기본 리스트 스타일 제거 */
+    padding-left:40px;
+}
+.tree *:before{
+    width:15px;
+    height:25px;
+    display:inline-block;
+}
+.tree label{
+    cursor: pointer;
+    font-size: 20px;
+    color: gray;
+}
+.tree .hide{
+    display: none;
+}
+.tree label:hover{
+    color: black;
+}
+.tree label:before{
+    content: '+'
+}
+.tree label.lastTree:before{
+    content:'o';
+}
+.tree label:hover:before{
+    content: '+'
+}
+.tree label.lastTree:hover:before{
+    content:'o';
+}
+.tree input[type="checkbox"] {
+    display: none;
+}
+.tree input[type="checkbox"]:checked~ul {
+    display: none;
+}
+.tree input[type="checkbox"]:checked+label:before{
+    content: '-'
+}
+.tree input[type="checkbox"]:checked+label:hover:before{
+    content: '-'
+}
+.tree input[type="checkbox"]:checked+label.lastTree:before{
+    content: 'o';
+}
+.tree input[type="checkbox"]:checked+label.lastTree:hover:before{
+    content: 'o';
+}
+
 /*메인화면(관리자, 판매자)*/
 .main-body-section{
     display: flex;
@@ -233,21 +305,27 @@ body{
     white-space: nowrap;
 }
 
-/* (사용자) 메인 페이지 */
-.carousel-section{
-
-}
-
-/* (판매자) 상품 추가 페이지 */
-
-
 /* (판매자) 상품 관리 페이지 */
 .product-card{
 }
 
 .product-card-description{
     word-wrap: break-word;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+    overflow: auto;
+    white-space: pre-wrap;
+    max-height: 10em;
 }
+
+.product-card:hover {
+    transform: scale(1.05); /* 확대 크기 조정 */
+    transition:all 0.3s ease-in-out;
+}
+
+/* (판매자) 상품 수정 페이지 */
+
+/* (사용자) 메인 페이지 */
+.carousel-section{
+
+}
+
+/* (판매자) 상품 추가 페이지 */

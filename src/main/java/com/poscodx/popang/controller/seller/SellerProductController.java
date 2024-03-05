@@ -38,6 +38,8 @@ public class SellerProductController {
         ProductDTO product = productService.findById(productId);
         List<ProductCategoryDTO> list = categoryService.findAllByDepth(1L);
 
+
+
         // 분류 확인 메시지 만들기
         String categoryPath = categoryService.getCategoryPath(product.getCategoryCode());
 
@@ -81,6 +83,50 @@ public class SellerProductController {
         return "product/seller/add_product";
     }
 
+    @PostMapping("delete")
+    @ResponseBody
+    public RestResponseDTO deleteProduct(Authentication auth, Long id){
+        UserDTO login = (UserDTO) auth.getPrincipal();
+        RestResponseDTO res = new RestResponseDTO();
+        res.setSuccess(true);
+        if(login.getRole() != 2)
+            res.setSuccess(false);
+
+        ProductDTO product = productService.findById(id);
+        if(product.getId() == null)
+            res.setSuccess(false);
+
+        if(res.isSuccess()){
+            productService.deleteById(id);
+            res.setMessage(product.getName() + " 삭제 완료!");
+        }
+        else
+            res.setMessage("상품 삭제 실패!");
+
+        return res;
+    }
+
+    @PostMapping("edit")
+    @ResponseBody
+    public RestResponseDTO editProduct(Authentication auth, ProductDTO productDTO, @RequestParam(value = "images", defaultValue = "null") List<String> images, Model model) {
+        UserDTO login = (UserDTO) auth.getPrincipal();
+        RestResponseDTO res = new RestResponseDTO();
+        boolean canEdit = productValidation(productDTO, res, login);
+        res.setSuccess(true);
+        res.setMessage("상품 수정 성공!");
+
+        if (canEdit) {
+            productService.editProduct(productDTO, login.getId(), images);
+        } else {
+            res.setSuccess(false);
+            StringBuilder sb = new StringBuilder();
+            for (String m : res.getErrors()) sb.append(m).append("<br>");
+            res.setMessage(sb.toString());
+        }
+
+        return res;
+    }
+
     @PostMapping("add")
     @ResponseBody
     public RestResponseDTO addProduct(Authentication auth, ProductDTO productDTO, @RequestParam(value = "images", defaultValue = "null") List<String> images, Model model) {
@@ -89,6 +135,10 @@ public class SellerProductController {
         boolean canAdd = productValidation(productDTO, res, login);
         res.setSuccess(true);
         res.setMessage("상품 등록 성공!");
+
+        System.out.println(productDTO);
+        System.out.println(images);
+
 
         if (canAdd) {
             productService.addProduct(productDTO, login.getId(), images);

@@ -1,5 +1,6 @@
 package com.poscodx.popang.service;
 
+import com.poscodx.popang.domain.Product;
 import com.poscodx.popang.domain.ProductCategory;
 import com.poscodx.popang.domain.dto.CategorySetDTO;
 import com.poscodx.popang.domain.dto.ProductCategoryDTO;
@@ -20,6 +21,18 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
 
+    public List<ProductCategory> findLargeForMenu(){
+        List<ProductCategory> larges =  categoryRepository.findAllByDepthOrderByName(1L);
+        for(ProductCategory large : larges){
+           large.setCategoryList(categoryRepository.findAllByParentCategoryOrderByName(large));
+           for(ProductCategory medium : large.getCategoryList()){
+               medium.setCategoryList(categoryRepository.findAllByParentCategoryOrderByName(medium));
+           }
+        }
+
+        return larges;
+    }
+
     public List<ProductCategoryDTO> findAllByDepth(Long depth){
         return categoryRepository.findAllByDepthOrderByName(depth)
                 .stream().map(c -> {
@@ -30,8 +43,18 @@ public class CategoryService {
     }
 
     public String getCategoryPath(Long code){
+        ProductCategory small = categoryRepository.findByCode(code);
+        ProductCategory medium = small.getParentCategory();
+        ProductCategory large = medium.getParentCategory();
 
-        return "";
+        StringBuilder path = new StringBuilder();
+        path.append(large.getName()).append("(").append(large.getCode()).append(")")
+                .append(" => ")
+                .append(medium.getName()).append("(").append(medium.getCode()).append(")")
+                .append(" => ")
+                .append(small.getName()).append("(").append(small.getCode()).append(")");
+
+        return path.toString();
     }
 
     public ProductCategoryDTO findByCode(Long code){

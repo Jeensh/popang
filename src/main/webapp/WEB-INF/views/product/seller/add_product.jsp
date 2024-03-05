@@ -6,10 +6,10 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/css/pospang.css">
     <script type="text/javascript" src="/js/jquery-3.7.1.js"></script>
-    <script type="text/javascript" src="/js/seller/product_add.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
+    <script type="text/javascript" src="/js/seller/product_add.js"></script>
     <title>상품추가(판매자)</title>
 
 </head>

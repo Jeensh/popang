@@ -19,7 +19,7 @@
             <img class="link-item-icon" src="/images/icon/add_product.png">
         </div>
         <div class="link-item-text">
-            <h5>추가</h5>
+            <h5>상품 추가</h5>
         </div>
     </a>
 </div>

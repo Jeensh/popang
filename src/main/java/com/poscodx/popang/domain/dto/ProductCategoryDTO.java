@@ -15,6 +15,9 @@ public class ProductCategoryDTO {
     private String name;
     private Long depth;
 
+    private ProductCategory parentCategory;
+    private List<ProductCategory> categoryList = new ArrayList<>();
+
     public void setDTOByEntity(ProductCategory category){
         code = category.getCode();
         name = category.getName();

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
+    @EntityGraph(attributePaths = {"imageList"})
     Product findProductById(Long id);
 
     @EntityGraph(attributePaths = {"imageList"})

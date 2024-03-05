@@ -7,6 +7,7 @@ import com.poscodx.popang.domain.User;
 import com.poscodx.popang.domain.dto.ProductDTO;
 import com.poscodx.popang.domain.dto.UserDTO;
 import com.poscodx.popang.repository.CategoryRepository;
+import com.poscodx.popang.repository.ProductImageRepository;
 import com.poscodx.popang.repository.ProductRepository;
 import com.poscodx.popang.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,11 +32,14 @@ public class ProductService {
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
+    private final ProductImageRepository productImageRepository;
 
     public ProductDTO findById(Long id){
         ProductDTO dto = new ProductDTO();
         Product product = productRepository.findProductById(id);
+        dto.setCategoryCode(product.getCategory().getCode());
         dto.setImageList(product.getImageList());
+        dto.setDTOByEntity(product);
         return dto;
     }
 
@@ -48,6 +52,39 @@ public class ProductService {
                     pd.setImageList(p.getImageList());
                     return pd;
                 });
+    }
+
+    @Transactional
+    public void deleteById(Long id){
+        productRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void editProduct(ProductDTO productDTO, String sellerId, List<String> images) {
+        Product product = productRepository.findProductById(productDTO.getId());
+
+        ProductCategory category = categoryRepository.findByCode(productDTO.getCategoryCode());
+        product.setCategory(category);
+        product.setName(productDTO.getName());
+        product.setPrice(productDTO.getPrice());
+        product.setStock(productDTO.getStock());
+        product.setDescription(productDTO.getDescription());
+        product.setDescriptionDetail(productDTO.getDescriptionDetail());
+
+        // 이미지 삭제
+        product.getImageList().clear();
+
+        // 이미지 넣기
+        if (images != null) {
+            for (String addrss : images) {
+                ProductImage pi = new ProductImage();
+                pi.setProduct(product);
+                pi.setImageAddress(addrss);
+                product.getImageList().add(pi);
+            }
+        }
+
+        productRepository.save(product);
     }
 
     @Transactional
@@ -76,8 +113,6 @@ public class ProductService {
         Timestamp nowTimeStamp = Timestamp.valueOf(nowDateTime);
         product.setUploadDate(nowTimeStamp);
 
-
-        System.out.println(images.size());
         // 이미지 넣기
         if (images != null) {
             for (String addrss : images) {

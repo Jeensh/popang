@@ -1,10 +1,13 @@
+let ckeditor
+
 // 초기화
 $().ready(() => {
     ClassicEditor
         .create(document.querySelector('#editor'))
-        .then(() => {
+        .then((res) => {
             let editor = $("#editor").next()
             editor.css("width", "100%")
+            ckeditor = res
         })
         .catch(error => {
             console.error(error);
@@ -21,13 +24,25 @@ $().ready(() => {
             cancelButtonText: '취소',
         }).then((result) => {
             if (result.isConfirmed) {
+                // 폼 데이터를 직렬화하여 JavaScript 객체로 변환
+                let formData = $("#product-add-form").serializeArray();
+
+                // 변환된 객체를 수정
+                for (var i = 0; i < formData.length; i++) {
+                    if (formData[i].name === "descriptionDetail") { // 필드 이름을 확인하여 수정할 필드 선택
+                        formData[i].value = ckeditor.getData(); // 필드 값을 변경
+                    }
+                }
+
+                // 수정된 JavaScript 객체를 다시 직렬화하여 사용할 수 있음
+                let serializedData = $.param(formData);
+
                 $.ajax({
                     url: '/seller/product/add',
                     type: 'post',
-                    data: $("#product-add-form").serialize(),
+                    data: serializedData,
                     dataType: 'json',
                     success: function (response) {
-                        console.log(response)
                         let title_data = '상품이 등록되었습니다.'
                         let message = response.message
                         let icon_data = 'success'
@@ -40,6 +55,10 @@ $().ready(() => {
                             title: title_data,
                             html: "<span style=\"color: #dc3545\">" + message + "</span>",
                             icon: icon_data,
+                        }).then((result) => {
+                          if(response.success){
+                              location.href = "/seller/product/management?pageNumber=1"
+                          }
                         })
                     }
                 });
@@ -82,7 +101,7 @@ function addImageInput(button) {
     let imageInput = "<div class=\"input-group input-group-lg mb-3\">\n" +
         "                    <span class=\"input-group-text\" id=\"images\">이미지 주소</span>\n" +
         "                    <input type=\"text\" class=\"form-control\" aria-label=\"Sizing example input\"\n" +
-        "                           aria-describedby=\"inputGroup-sizing-lg\" name=\"images\">\n"
+        "                           aria-describedby=\"inputGroup-sizing-lg\" name=\"images\"></div>"
     let div = $(button).parent().prev()
 
     if (imageInputCounter < 4) {
@@ -93,7 +112,7 @@ function addImageInput(button) {
 
 function deleteImageInput(button) {
     if (imageInputCounter > 0) {
-        let input = $(button).parent().prev().find("div").eq(imageInputCounter - 1);
+        let input = $(button).parent().prev().find("div").eq(0);
         input.remove()
         imageInputCounter--;
     }

@@ -26,7 +26,7 @@
                             <img class="link-item-icon" src="/images/icon/product.png">
                         </div>
                         <div class="link-item-text">
-                            <h5>상품 관리(미완)</h5>
+                            <h5>상품 관리</h5>
                         </div>
                     </a>
                 </div>
