@@ -8,6 +8,9 @@ $().ready(() => {
         let parentId = item.find(".category-code").text()
         let parentName = item.find(".category-name").text()
 
+        $(".large-category-item").removeClass("active")
+        item.addClass("active")
+
         $('input[name=largeCode]').val(parentId)
         $('input[name=largeName]').val(parentName)
         $('input[name=mediumCode]').val("")
@@ -16,15 +19,16 @@ $().ready(() => {
         $('input[name=smallName]').val("")
 
         $.ajax({
-            url: '/admin/category/' + parentId,
+            url: '/category/' + parentId,
             type: 'post',
             dataType: 'html',
             success: function (response) {
                 $('#medium-category').html(response);
-                // $(".large-category-item").removeAttr('disabled', false);
+                $('#small-category').html("");
             },
             error: function (errors){
-                // $(".large-category-item").removeAttr('disabled', false);
+                $('#medium-category').html("");
+                $('#small-category').html("");
             }
         });
     })

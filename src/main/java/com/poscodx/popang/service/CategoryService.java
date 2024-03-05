@@ -29,6 +29,11 @@ public class CategoryService {
                 }).toList();
     }
 
+    public String getCategoryPath(Long code){
+
+        return "";
+    }
+
     public ProductCategoryDTO findByCode(Long code){
         ProductCategoryDTO pcDTO = new ProductCategoryDTO();
         ProductCategory pc = categoryRepository.findByCode(code);

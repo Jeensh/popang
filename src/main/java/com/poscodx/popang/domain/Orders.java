@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 public class Orders {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Date orderDate;
     private Long orderPrice;

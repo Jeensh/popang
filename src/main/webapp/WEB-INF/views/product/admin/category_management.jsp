@@ -22,20 +22,27 @@
         </header>
         <section class="main-content-section">
             <div class="category-list-container">
-                <div class="list-group category-list" id="large-category" role="tablist">
-                    <h5 style="margin-top: 4%">대분류</h5>
-                    <c:forEach items="${largeCategories}" var="largeItem">
-                        <button class="large-category-item list-group-item list-group-item-action">
-                            <span class="category-name">${largeItem.name}</span><br>
-                            (<span class="category-code">${largeItem.code}</span>)
-                        </button>
-                    </c:forEach>
+                <div class="list-group category-list-wrapper" role="tablist">
+                    <h5 style="margin-top: 4%;">대분류</h5>
+                    <div class="category-list" id="large-category">
+                        <c:forEach items="${largeCategories}" var="largeItem">
+                            <button type="button"
+                                    class="large-category-item list-group-item list-group-item-action">
+                                <span class="category-name">${largeItem.name}</span><br>
+                                (<span class="category-code">${largeItem.code}</span>)
+                            </button>
+                        </c:forEach>
+                    </div>
                 </div>
-                <div class="list-group category-list" id="medium-category" role="tablist">
+                <div class="list-group category-list-wrapper" role="tablist">
                     <h5 style="margin-top: 4%">중분류</h5>
+                    <div class="category-list" id="medium-category">
+                    </div>
                 </div>
-                <div class="list-group category-list" id="small-category" role="tablist">
+                <div class="list-group category-list-wrapper" role="tablist">
                     <h5 style="margin-top: 4%">소분류</h5>
+                    <div class="category-list" id="small-category">
+                    </div>
                 </div>
             </div>
         </section>

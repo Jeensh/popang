@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class Delivery {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long status;
 

@@ -1,15 +1,25 @@
 package com.poscodx.popang.controller;
 
+import com.poscodx.popang.domain.dto.BannerDTO;
 import com.poscodx.popang.domain.dto.UserDTO;
+import com.poscodx.popang.service.BannerService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 public class HomeController {
+
+    private final BannerService bannerService;
+
     @GetMapping("/")
     public String moveLoginPage(){
         SecurityContextHolder.getContext().setAuthentication(null);
@@ -17,14 +27,22 @@ public class HomeController {
     }
 
     @GetMapping("/main")
-    public String moveMainPage(Authentication auth) {
+    public String moveMainPage(Authentication auth, Model model) {
         UserDTO login = (UserDTO) auth.getPrincipal();
 
         String role = login.getRole().toString();
-        return switch (role) {
-            case "3" -> "main/admin_main";
-            case "2" -> "main/seller_main";
-            default -> "main/main";
-        };
+        switch (role) {
+            case "3": {
+                return "main/admin_main";
+            }
+            case "2": {
+                return "main/seller_main";
+            }
+            default: {
+                List<BannerDTO> bannerList = bannerService.findAll();
+                model.addAttribute("bannerList", bannerList);
+                return "main/main";
+            }
+        }
     }
 }

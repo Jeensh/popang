@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 public class Reply {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
     private String content;
     private Date uploadDate;

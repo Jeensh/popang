@@ -41,7 +41,7 @@
                     </a>
                 </div>
                 <div class="link-item-wrapper bg-body-secondary col-lg-4 col-md-4 col-sm-6 col-12 border">
-                    <a href="#">
+                    <a href="/admin/banner/management">
                         <div class="link-item-icon-section">
                             <img class="link-item-icon" src="/images/icon/banner.png">
                         </div>

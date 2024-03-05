@@ -10,7 +10,7 @@ import lombok.Setter;
 @Table(name = "product_image")
 public class ProductImage {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String imageAddress;
     private Long priority;

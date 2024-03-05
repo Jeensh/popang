@@ -134,7 +134,7 @@ body{
 }
 
 .main-body{
-    width: 60%;
+    width: 80%;
     height: 100%;
 }
 
@@ -198,10 +198,39 @@ body{
 
 }
 
+.category-list-container{
+    display: flex;
+    justify-content: center;
+}
+
+.category-list-wrapper{
+    text-align: center;
+    width: 30%;
+    margin: 1%;
+    border:solid;
+    border-width: medium;
+}
+
+.category-list{
+    /*text-align: center;*/
+    /*width: 30%;*/
+    /*margin: 1%;*/
+    /*border:solid;*/
+    /*border-width: medium;*/
+    max-height: 25em;
+    overflow-y: auto;
+}
+
 .add-category-input{
     text-align: center;
+}
+
+/* (사용자) 메인 페이지 */
+.carousel-section{
+
 }
 
 /* (판매자) 상품 추가 페이지 */
 
 /* (판매자) 상품 관리 페이지 */
+

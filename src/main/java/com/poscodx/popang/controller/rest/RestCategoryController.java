@@ -51,7 +51,7 @@ public class RestCategoryController {
             categoryService.addSet(set, 2);
         }
         // 대까지만 입력하는 경우
-        else if(set.getSmallCode() != null){
+        else if(set.getLargeCode() != null){
             categoryService.addSet(set, 3);
         }
         else{

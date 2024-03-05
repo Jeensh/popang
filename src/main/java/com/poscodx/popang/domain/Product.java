@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 public class Product {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private Long price;
@@ -23,9 +23,17 @@ public class Product {
     private String descriptionDetail;
     private Timestamp uploadDate;
 
-    @OneToMany(mappedBy = "product")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seller_id")
+    private User seller;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_code")
+    private ProductCategory category;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reply> replyList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImage> imageList = new ArrayList<>();
 }

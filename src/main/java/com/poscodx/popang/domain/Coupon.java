@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class Coupon {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private Long type;

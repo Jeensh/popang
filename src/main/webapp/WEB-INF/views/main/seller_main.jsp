@@ -21,7 +21,7 @@
         <section class="main-content-section">
             <section class="main-link-list row">
                 <div class="link-item-wrapper bg-body-secondary col-lg-4 col-md-4 col-sm-6 col-12 border">
-                    <a class="link-item" href="#">
+                    <a class="link-item" href="/seller/product/management">
                         <div class="link-item-icon-section">
                             <img class="link-item-icon" src="/images/icon/product.png">
                         </div>

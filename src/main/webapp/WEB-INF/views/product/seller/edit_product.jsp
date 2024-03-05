@@ -6,11 +6,10 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/css/pospang.css">
     <script type="text/javascript" src="/js/jquery-3.7.1.js"></script>
-    <script type="text/javascript" src="/js/seller/product_add.js"></script>
+    <script type="text/javascript" src="/js/seller/product_edit.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
-    <title>상품추가(판매자)</title>
+    <title>상품수정(판매자)</title>
 
 </head>
 <header>
@@ -19,7 +18,7 @@
 <section class="main-body-section ">
     <section class="main-body bg-light-subtle">
         <header class="main-title-section bg-dark-subtle bg-gradient rounded-bottom-5">
-            <h2 style="margin-top: 1%;">상품 추가</h2>
+            <h2 style="margin-top: 1%;">상품 수정</h2>
         </header>
         <div class="category-list-container">
             <div class="list-group category-list-wrapper" role="tablist">
@@ -79,8 +78,7 @@
                 </div>
                 <div style="display: flex; flex-direction: column; align-items: start; width: 100%; height: 100%">
                     <h4>정보</h4>
-                    <textarea name="descriptionDetail" id="editor">
-                    </textarea>
+                    <textarea style="width: 100%; height: 100%" name="descriptionDetail"></textarea>
                 </div>
                 <button type="button" class="save-btn btn btn-outline-info mt-3">상품 등록</button>
             </form>

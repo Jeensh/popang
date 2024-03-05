@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class Address {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "main_address")
     private String mainAddress;
