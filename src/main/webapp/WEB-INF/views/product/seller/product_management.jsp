@@ -32,7 +32,7 @@
             <section class="product-list-section"
                      style="display: flex; flex-direction: column; align-items: center; width: 100%">
                 <c:forEach items="${productList}" var="item">
-                    <div class="card m-3" style="width: 70%; height: 10%">
+                    <div class="product-card card m-3" style="width: 70%; height: 10%">
                         <div class="row g-0">
                             <a href="/seller/product/${item.id}" class="col-md-4">
                                 <img src="${item.imageList[0].imageAddress}" class="img-fluid rounded-start"
@@ -45,7 +45,7 @@
                                         <span class="fw-bold text-danger">가격 : </span>${item.price}<br>
                                         <span class="fw-bold ">수량 : </span>${item.stock}
                                     </p>
-                                    <p class="card-text">${item.description}</p>
+                                    <p class="product-card-description">${item.description}</p>
                                     <p class="card-text">
                                         <small class="text-body-secondary">
                                             등록일 : ${item.uploadDate}

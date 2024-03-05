@@ -28,10 +28,7 @@
                 <c:forEach items="${bannerList}" var="banner">
                     <tr>
                         <td class="banner-id">${banner.id}</td>
-                        <td class="banner-address" style="max-width: 200px;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;">
+                        <td class="banner-address">
                            ${banner.address}
                         </td>
                         <td>

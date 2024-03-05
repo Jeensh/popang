@@ -225,6 +225,14 @@ body{
     text-align: center;
 }
 
+/* (관리자) 배너 관리 페이지*/
+.banner-address{
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 /* (사용자) 메인 페이지 */
 .carousel-section{
 
@@ -232,5 +240,14 @@ body{
 
 /* (판매자) 상품 추가 페이지 */
 
-/* (판매자) 상품 관리 페이지 */
 
+/* (판매자) 상품 관리 페이지 */
+.product-card{
+}
+
+.product-card-description{
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
