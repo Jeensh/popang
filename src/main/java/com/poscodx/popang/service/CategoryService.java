@@ -49,9 +49,9 @@ public class CategoryService {
 
         StringBuilder path = new StringBuilder();
         path.append(large.getName()).append("(").append(large.getCode()).append(")")
-                .append(" => ")
+                .append(" > ")
                 .append(medium.getName()).append("(").append(medium.getCode()).append(")")
-                .append(" => ")
+                .append(" > ")
                 .append(small.getName()).append("(").append(small.getCode()).append(")");
 
         return path.toString();
@@ -64,8 +64,8 @@ public class CategoryService {
 
         StringBuilder path = new StringBuilder();
         path.append(large.getName())
-                .append(" => ").append(medium.getName())
-                .append(" => ").append(small.getName());
+                .append(" > ").append(medium.getName())
+                .append(" > ").append(small.getName());
 
         return path.toString();
     }

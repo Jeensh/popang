@@ -356,6 +356,15 @@ body{
     text-overflow: ellipsis; /* 넘치는 부분 대체 */
 }
 
+.product-order-section{
+    overflow: auto;
+}
+
+.product-info-summary{
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
 #product-detail-section{
     overflow: auto;
 }

@@ -32,7 +32,8 @@ public class ProductController {
     private static final int PAGE_SIZE = 12;
 
     @GetMapping("/{productId}")
-    public String moveProductDetailPage(Model model, @PathVariable Long productId){
+    public String moveProductDetailPage(Authentication auth, Model model, @PathVariable Long productId){
+        UserDTO user = (UserDTO) auth.getPrincipal();
         ProductDTO product = productService.findById(productId);
         List<ProductCategoryDTO> list = categoryService.findAllByDepth(1L);
 
@@ -42,6 +43,8 @@ public class ProductController {
         model.addAttribute("largeCategories", list);
         model.addAttribute("product", product);
         model.addAttribute("categoryPath", categoryPath);
+        model.addAttribute("role", user.getRole());
+
         return "product/product_detail";
     }
 
@@ -58,7 +61,6 @@ public class ProductController {
         int totalPage = productPage.getTotalPages();
         long totalElement = productPage.getTotalElements();
         List<ProductDTO> productDTOList = productPage.getContent();
-        UserDTO user = (UserDTO) auth.getPrincipal();
 
         int startPage = (((pageNumber - 1) / PAGE_SIZE) * 10) + 1;
         int endPage = Math.min(startPage + PAGE_SIZE - 1, totalPage);
@@ -71,7 +73,6 @@ public class ProductController {
         model.addAttribute("endPage", endPage);
         model.addAttribute("keyword", keyword);
         model.addAttribute("categoryCode", categoryCode);
-        model.addAttribute("role", user.getRole());
 
         if (totalPage > 0 && pageNumber > totalPage) {
             String encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
