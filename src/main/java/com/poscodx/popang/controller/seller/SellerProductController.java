@@ -71,7 +71,7 @@ public class SellerProductController {
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
 
-        if (pageNumber > totalPage)
+        if (totalPage > 0 && pageNumber > totalPage)
             return "redirect:/seller/product/management?pageNumber=" + totalPage;
         return "product/seller/product_management";
     }

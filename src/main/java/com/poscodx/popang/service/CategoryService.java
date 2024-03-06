@@ -57,6 +57,19 @@ public class CategoryService {
         return path.toString();
     }
 
+    public String getCategoryPathWithNoCode(Long code){
+        ProductCategory small = categoryRepository.findByCode(code);
+        ProductCategory medium = small.getParentCategory();
+        ProductCategory large = medium.getParentCategory();
+
+        StringBuilder path = new StringBuilder();
+        path.append(large.getName())
+                .append(" => ").append(medium.getName())
+                .append(" => ").append(small.getName());
+
+        return path.toString();
+    }
+
     public ProductCategoryDTO findByCode(Long code){
         ProductCategoryDTO pcDTO = new ProductCategoryDTO();
         ProductCategory pc = categoryRepository.findByCode(code);

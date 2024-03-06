@@ -162,10 +162,18 @@ body{
     font-size: 20px;
     color: gray;
 }
+.tree label a{
+    cursor: pointer;
+    font-size: 20px;
+    color: gray;
+}
 .tree .hide{
     display: none;
 }
 .tree label:hover{
+    color: black;
+}
+.tree label a:hover{
     color: black;
 }
 .tree label:before{
@@ -306,8 +314,6 @@ body{
 }
 
 /* (판매자) 상품 관리 페이지 */
-.product-card{
-}
 
 .product-card-description{
     word-wrap: break-word;
@@ -319,6 +325,9 @@ body{
 .product-card:hover {
     transform: scale(1.05); /* 확대 크기 조정 */
     transition:all 0.3s ease-in-out;
+    border-color: dodgerblue;
+    border-width: medium;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과의 크기와 색상 설정 */
 }
 
 /* (판매자) 상품 수정 페이지 */
@@ -329,3 +338,24 @@ body{
 }
 
 /* (판매자) 상품 추가 페이지 */
+
+/* (사용자) 상품 목록 페이지 */
+.product-card-body{
+    /*white-space: nowrap; !* 줄 바꿈 방지 *!*/
+    overflow: auto; /* 넘치는 부분 감춤 */
+    text-overflow: ellipsis; /* 넘치는 부분 대체 */
+}
+
+.product-card{
+
+}
+
+/* (사용자) 상품 상세 페이지 */
+.product-info{
+    overflow: hidden; /* 넘치는 부분 감춤 */
+    text-overflow: ellipsis; /* 넘치는 부분 대체 */
+}
+
+#product-detail-section{
+    overflow: auto;
+}

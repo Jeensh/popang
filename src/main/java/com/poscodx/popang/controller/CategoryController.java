@@ -1,6 +1,7 @@
 package com.poscodx.popang.controller;
 
 
+import com.poscodx.popang.domain.ProductCategory;
 import com.poscodx.popang.domain.dto.ProductCategoryDTO;
 import com.poscodx.popang.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -28,5 +29,12 @@ public class CategoryController {
         model.addAttribute("Categories", list);
         model.addAttribute("depth", categoryService.findByCode(parentCode).getDepth() + 1);
         return "product/category_items";
+    }
+
+    @PostMapping("menu")
+    public String getCategoryMenu(Model model){
+        List<ProductCategory> largeCategories = categoryService.findLargeForMenu();
+        model.addAttribute("largeCategories", largeCategories);
+        return "component/category_menu";
     }
 }

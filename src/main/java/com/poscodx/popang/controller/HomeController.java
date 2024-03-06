@@ -45,8 +45,6 @@ public class HomeController {
                 return "main/seller_main";
             }
             default: {
-                List<ProductCategory> largeCategories = categoryService.findLargeForMenu();
-                model.addAttribute("largeCategories", largeCategories);
                 List<BannerDTO> bannerList = bannerService.findAll();
                 model.addAttribute("bannerList", bannerList);
                 return "main/main";

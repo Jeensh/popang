@@ -24,6 +24,7 @@ public class ProductDTO {
     private Timestamp uploadDate;
     private Long categoryCode;
     private String sellerId;
+    private String sellerName;
 
     private List<Reply> replyList = new ArrayList<>();
     private List<ProductImage> imageList = new ArrayList<>();

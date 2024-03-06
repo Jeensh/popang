@@ -34,12 +34,30 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
 
-    public ProductDTO findById(Long id){
+    public Page<ProductDTO> findAllByCategoryAndNameContaining(String keyword, Long categoryCode, Pageable pageable) {
+        Page<Product> pages;
+        if (categoryCode == 0)
+            pages =  productRepository.findByNameContaining(keyword, pageable);
+        else {
+            ProductCategory category = categoryRepository.findByCode(categoryCode);
+            pages = productRepository.findAllByCategoryAndNameContaining(category, keyword, pageable);
+        }
+        return pages.map(p -> {
+            ProductDTO dto = new ProductDTO();
+            dto.setDTOByEntity(p);
+            dto.setImageList(p.getImageList());
+            dto.setSellerName(p.getSeller().getName());
+            return dto;
+        });
+    }
+
+    public ProductDTO findById(Long id) {
         ProductDTO dto = new ProductDTO();
         Product product = productRepository.findProductById(id);
         dto.setCategoryCode(product.getCategory().getCode());
         dto.setImageList(product.getImageList());
         dto.setDTOByEntity(product);
+        dto.setSellerName(product.getSeller().getName());
         return dto;
     }
 
@@ -55,7 +73,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void deleteById(Long id){
+    public void deleteById(Long id) {
         productRepository.deleteById(id);
     }
 
