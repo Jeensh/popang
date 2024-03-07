@@ -13,6 +13,7 @@ public class OrderItemDTO {
     private Long totalPrice;
     private Long orderId;
     private Long productId;
+    private ProductDTO product;
 
     public void setDTOByEntity(OrderItem orderItem){
         id = orderItem.getId();

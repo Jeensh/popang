@@ -66,7 +66,7 @@
                             <img class="link-item-icon" src="/images/icon/undefined.png">
                         </div>
                         <div class="link-item-text">
-                            <h5>미정1</h5>
+                            <h5>준비중</h5>
                         </div>
                     </a>
                 </div>

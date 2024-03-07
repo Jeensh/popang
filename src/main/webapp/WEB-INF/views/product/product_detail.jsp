@@ -53,9 +53,9 @@
                     </div>
                     <c:if test="${role == 1}">
                         <form class="product-order-section" id="product-order-form" method="post"
-                              style="display: flex; justify-content: end">
+                              style="display: flex; justify-content: end;">
                             <input type="hidden" name="productId" id="product-id" value="${product.id}">
-                            <div class="input-group input-group-lg me-2" style="width: 50%; height: 70%">
+                            <div class="input-group input-group-lg me-2 mb-0" style="width: 50%; height: 75%">
                                 <span class="input-group-text">수량</span>
                                 <input type="text" class="form-control" aria-label="Sizing example input"
                                        aria-describedby="inputGroup-sizing-lg" name="count" id="count">
@@ -218,7 +218,7 @@
                                 icon: icon_data,
                             }).then((result) => {
                                 if(response.success){
-                                    // location.href = "/seller/product/management?pageNumber=1"
+                                    location.reload();
                                 }
                             })
 

@@ -21,7 +21,7 @@ public class OrderDTO {
     private String userId;
     private Long deliveryId;
     private Long couponId;
-    private List<OrderItem> orderItemList = new ArrayList<>();
+    private List<OrderItemDTO> orderItemList = new ArrayList<>();
 
     public void setDTOByEntity(Orders order){
         id = order.getId();

@@ -46,7 +46,7 @@
                             <img class="link-item-icon" src="/images/icon/banner.png">
                         </div>
                         <div class="link-item-text">
-                            <h5>배너 관리(미완)</h5>
+                            <h5>배너 관리</h5>
                         </div>
                     </a>
                 </div>
@@ -56,7 +56,7 @@
                             <img class="link-item-icon" src="/images/icon/undefined.png">
                         </div>
                         <div class="link-item-text">
-                            <h5>미정1</h5>
+                            <h5>준비중</h5>
                         </div>
                     </a>
                 </div>
@@ -66,7 +66,7 @@
                             <img class="link-item-icon" src="/images/icon/undefined.png">
                         </div>
                         <div class="link-item-text">
-                            <h5>미정2</h5>
+                            <h5>준비중</h5>
                         </div>
                     </a>
                 </div>

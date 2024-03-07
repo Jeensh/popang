@@ -24,7 +24,7 @@
                 <c:forEach items="${productList}" var="product">
                     <div class="col">
                         <div class="product-card card h-100"
-                             style="max-height: 300px; display: flex; justify-content: center">
+                             style="max-height: 450px; display: flex; justify-content: center">
                             <div class="border-bottom"
                                  style="display: flex; justify-content: center; align-items: center; width: 100%; height: 50%; border-width: thin; border-color: lightgray">
                                 <a href="/products/${product.id}">
@@ -33,11 +33,12 @@
                                          style="width: 100%; height: 100%">
                                 </a>
                             </div>
-                            <div class="product-card-body card-body" style="width: 90%;">
+                            <div class="product-card-body card-body" style="width: 90%; height: 40%">
                                 <h5 class="card-title">${product.name}</h5>
                                 <p class="product-card-body" style="max-height: 3em">${product.description}</p>
+                                <p class="product-card-body" style="max-height: 1.5em"><span style="color: #dc3545; font-weight: bold">가격 : </span>${product.price}</p>
                             </div>
-                            <div class="card-footer">
+                            <div class="card-footer" style="height: 10%">
                                 <small class="text-body-secondary">판매자 : ${product.sellerName}</small>
                             </div>
                         </div>

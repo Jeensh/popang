@@ -1,6 +1,8 @@
 package com.poscodx.popang.controller;
 
 
+import com.poscodx.popang.domain.Cart;
+import com.poscodx.popang.domain.CartItem;
 import com.poscodx.popang.domain.OrderItem;
 import com.poscodx.popang.domain.dto.*;
 import com.poscodx.popang.service.CategoryService;
@@ -31,10 +33,139 @@ public class OrderController {
     private final CategoryService categoryService;
     private final UserService userService;
     private final OrderService orderService;
+    private final int PAGE_SIZE = 8;
 
-    // 장바구니 수정
-    // 장바구니 선택 구매(주문 생성) - 상품 수량 줄어들지 않음
     // (구매자) 주문 상태변경 (결제전 -> 결제후, 결제후 -> 구매확정 or 환불)
+    @PostMapping("confirm")
+    public RestResponseDTO confirmOrder(Authentication auth, Long orderId){
+        UserDTO login = (UserDTO) auth.getPrincipal();
+        RestResponseDTO res = new RestResponseDTO();
+        res.setSuccess(true);
+        res.setMessage("이제 환불하실 수 없습니다.");
+        OrderDTO orderDTO = orderService.findOrderById(orderId);
+        if(orderDTO.getId() == null){
+            res.setSuccess(false);
+            res.setMessage("존재하지 않는 주문입니다.");
+        }
+        if(!orderDTO.getUserId().equals(login.getId())){
+            res.setSuccess(false);
+            res.setMessage("주문과 주문자가 일치하지 않습니다");
+        }
+        if(res.isSuccess())
+            orderService.changeOrderStatus(orderId, 3L);
+        return res;
+    }
+
+    // 주문 페이지로 이동
+    @GetMapping("orders")
+    public String moveToOrdersPage(Authentication auth, Model model, @RequestParam(defaultValue = "0") int pageNumber){
+        UserDTO login = (UserDTO) auth.getPrincipal();
+        String loginId = login.getId();
+
+        if (pageNumber <= 0) pageNumber = 1;
+        PageRequest page = PageRequest.of(pageNumber - 1, PAGE_SIZE);
+        Page<OrderDTO> orderPage = orderService.findOrdersByUser(loginId, page);
+        int totalPage = orderPage.getTotalPages();
+        long totalElement = orderPage.getTotalElements();
+        List<OrderDTO> orderList = orderPage.getContent();
+
+        int startPage = (((pageNumber - 1) / PAGE_SIZE) * 10) + 1;
+        int endPage = Math.min(startPage + PAGE_SIZE - 1, totalPage);
+
+        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("totalElement", totalElement);
+        model.addAttribute("orderList", orderList);
+        model.addAttribute("currentPage", pageNumber);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
+        if (totalPage > 0 && pageNumber > totalPage)
+            return "redirect:/order/orders?pageNumber=" + totalPage;
+        return "order/orders";
+    }
+
+    // 장바구니 선택 구매(주문 생성) - 상품 수량 줄어듬
+    @PostMapping("cart/purchase")
+    @ResponseBody
+    public RestResponseDTO orderByCart(Authentication auth,
+                                       AddressDTO addressDTO,
+                                       @RequestParam(value = "idList[]") List<Long> cartItemIdList){
+        UserDTO login = (UserDTO) auth.getPrincipal();
+        RestResponseDTO res = new RestResponseDTO();
+        res.setSuccess(true);
+        res.setMessage("구매 완료!");
+
+        // 사용자 검증
+        if(login.getRole() != 1L){
+            res.setMessage("상품 구매는 사용자만 가능합니다.");
+            res.setSuccess(false);
+        }
+
+        // 상품 유무 검증
+        List<CartItemDTO> cartItemDTOList = orderService.findSelectedCartItem(cartItemIdList);
+        for(CartItemDTO item : cartItemDTOList){
+            ProductDTO product = productService.findById(item.getProductId());
+
+            // 수량 확인
+            if(item.getCount() == null || item.getCount() < 1){
+                res.setMessage("정확한 수량을 입력해주세요.");
+                res.setSuccess(false);
+                break;
+            }
+            else if(product.getStock() < item.getCount()){
+                res.setMessage(product.getName() + "의 수량이 부족합니다.");
+                res.setSuccess(false);
+                break;
+            }
+        }
+
+        // 주소 확인
+        String mainAddress = addressDTO.getMainAddress();
+        String detailAddress = addressDTO.getDetailAddress();
+        if(mainAddress == null || detailAddress == null || mainAddress.isEmpty() || detailAddress.isEmpty()){
+            res.setMessage("주소를 모두 입력해주세요.");
+            res.setSuccess(false);
+        }
+
+        // 주문 생성하고 구매한 cart-item 비우기
+        if(res.isSuccess())
+            orderService.selectOrder(login.getId(), cartItemDTOList, addressDTO);
+        return res;
+    }
+
+    // 장바구니 비우기
+    @PostMapping("cart/clear")
+    @ResponseBody
+    public RestResponseDTO clearCart(Long cartId) {
+        RestResponseDTO res = new RestResponseDTO();
+        res.setSuccess(true);
+        orderService.clearCart(cartId);
+        return res;
+    }
+
+    // 장바구니 아이템 삭제
+    @PostMapping("cart/delete")
+    @ResponseBody
+    public RestResponseDTO deleteCartItem(Long carItemId){
+        RestResponseDTO res = new RestResponseDTO();
+        res.setSuccess(true);
+        orderService.deleteCartItem(carItemId);
+        return res;
+    }
+
+    // 장바구니 페이지 열기
+    @GetMapping("cart")
+    public String moveCartPage(Authentication auth, Model model){
+        // 사용자 검증
+        UserDTO login = (UserDTO) auth.getPrincipal();
+        if(login.getRole() != 1L) return "redirect:/";
+
+        // 장바구니 아이템 가져오기
+        CartDTO cart = orderService.findCartByUserId(login.getId());
+
+        model.addAttribute("cart", cart);
+        return "order/cart";
+    }
 
     // 장바구니 추가 - 상품 수량 줄어들지 않음
     @PostMapping("cart/add")
@@ -64,7 +195,7 @@ public class OrderController {
             res.setSuccess(false);
         }
 
-        // 주문 생성하기
+        // 장바구니에 추가하기
         if(res.isSuccess())
             orderService.addCartItem(cartItemDTO, login.getId());
         return res;

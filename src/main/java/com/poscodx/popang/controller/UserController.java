@@ -1,17 +1,22 @@
 package com.poscodx.popang.controller;
 
 
+import com.poscodx.popang.domain.dto.AuthDTO;
+import com.poscodx.popang.domain.dto.ProductDTO;
+import com.poscodx.popang.domain.dto.RestResponseDTO;
 import com.poscodx.popang.domain.dto.UserDTO;
 import com.poscodx.popang.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.users.SparseUserDatabase;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +27,18 @@ import java.util.List;
 @Slf4j
 public class UserController {
     private final UserService userService;
+
+    @PostMapping("data")
+    @ResponseBody
+    public AuthDTO auth(Authentication auth){
+        UserDTO login = (UserDTO) auth.getPrincipal();
+        AuthDTO authDTO = new AuthDTO();
+        authDTO.setId(login.getId());
+        authDTO.setName(login.getName());
+        authDTO.setRole(login.getRole());
+        authDTO.setGrade(login.getGrade());
+        return authDTO;
+    }
 
     @GetMapping("register")
     public String moveRegisterPage() {

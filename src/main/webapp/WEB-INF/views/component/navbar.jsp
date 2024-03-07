@@ -18,8 +18,8 @@
             </button>
         </form>
         <div class="nav-item-section ms-4">
-            <a class="nav-item" href="#"><img class="nav-bar-icon" src="/images/icon/empty_cart.png"></a>
-            <a class="nav-item" aria-current="page" href="#"><img class="nav-bar-icon"
+            <a class="nav-item" href="/order/cart" id="cart" style="display: none"><img class="nav-bar-icon" src="/images/icon/empty_cart.png"></a>
+            <a class="nav-item" aria-current="page" href="/order/orders"><img class="nav-bar-icon"
                                                                   src="/images/icon/myPage.png"></a>
             <a class="nav-item" href="/logout"><img class="nav-bar-icon" src="/images/icon/logout.png"></a>
         </div>
@@ -40,6 +40,23 @@
 </div>
 
 <script>
+    $.ajax({
+        url: '/user/data',
+        type: 'post',
+        dataType: 'json',
+        success: function(login){
+            if(login.role == 1){
+                $("#cart").css("display", "block")
+            }
+            else{
+                $("#cart").remove()
+            }
+        },
+        error: function (response){
+            console.log(response)
+        }
+    });
+
     $().ready(() => {
         $("#category-menu-btn").one("click", () => {
             $.ajax({

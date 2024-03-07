@@ -243,7 +243,7 @@ body{
 }
 
 .link-item-wrapper:hover .link-item-icon {
-    transform: scale(1.1); /* 이미지 크기를 1.1배로 확대합니다. */
+    transform: scale(1.05); /* 이미지 크기를 1.1배로 확대합니다. */
     transition:all 0.15s ease-in-out;
 }
 
@@ -367,4 +367,34 @@ body{
 
 #product-detail-section{
     overflow: auto;
+}
+
+/* (사용자) 장바구니 페이지 */
+/*.cart-item:hover {*/
+/*    transform: scale(0.95); !* 확대 크기 조정 *!*/
+/*    transition:all 0.3s ease-in-out;*/
+/*    border-color: dodgerblue;*/
+/*    border-width: medium;*/
+/*    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); !* 그림자 효과의 크기와 색상 설정 *!*/
+/*}*/
+
+.cart-item input[type="checkbox"]+label {
+    cursor: pointer;
+}
+
+.cart-item input[type="checkbox"]+label:hover {
+    /*transform: scale(0.98); !* 확대 크기 조정 *!*/
+    transition:all 0.1s ease-in-out;
+    border: solid;
+    border-color: dodgerblue;
+    border-width: medium;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과의 크기와 색상 설정 */
+}
+
+.cart-item input[type="checkbox"]:checked+label {
+    /*transform: scale(0.98); !* 확대 크기 조정 *!*/
+    border: solid;
+    border-color: dodgerblue;
+    border-width: medium;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과의 크기와 색상 설정 */
 }
