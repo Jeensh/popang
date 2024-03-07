@@ -30,6 +30,9 @@ public class Orders {
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
 
+    @OneToOne(mappedBy = "orders")
+    private Refund refund;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItemList = new ArrayList<>();
 

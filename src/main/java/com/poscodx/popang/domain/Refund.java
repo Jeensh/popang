@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
 @Entity
 @Getter
 @Setter
@@ -12,6 +14,8 @@ public class Refund {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String reason;
+    private Timestamp enrollDate;
+    private Timestamp refundDate;
     private Long status;
 
     @OneToOne

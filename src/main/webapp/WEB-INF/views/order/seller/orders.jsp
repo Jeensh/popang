@@ -8,11 +8,11 @@
     <script type="text/javascript" src="/js/jquery-3.7.1.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <title>주문 목록</title>
+    <title>주문 목록(판매자)</title>
 
 </head>
 <header>
-    <jsp:include page="../component/navbar.jsp"></jsp:include>
+    <jsp:include page="../../component/navbar.jsp"></jsp:include>
 </header>
 <section id="sideMenu"
          style="display: flex;  flex-direction: column; align-items: center; position: fixed; margin-top: 1em; margin-left: 1em">
@@ -26,23 +26,23 @@
             </div>
         </button>
     </div>
-    <div class="link-item-wrapper" style="width: fit-content; height: fit-content">
+    <div class="link-item-wrapper" style="width: fit-content; height: fit-content" ;>
+        <button class="link-item border-0 bg-white" id="order-item-btn">
+            <div class="link-item-icon-section">
+                <img class="link-item-icon" src="/images/icon/product.png">
+            </div>
+            <div class="link-item-text">
+                <h5>주문 상품</h5>
+            </div>
+        </button>
+    </div>
+    <div class="link-item-wrapper" style="width: fit-content; height: fit-content" ;>
         <button class="link-item border-0 bg-white" id="refund-btn">
             <div class="link-item-icon-section">
                 <img class="link-item-icon" src="/images/icon/refund.png">
             </div>
             <div class="link-item-text">
-                <h5>환불 목록</h5>
-            </div>
-        </button>
-    </div>
-    <div class="link-item-wrapper" style="width: fit-content; height: fit-content" ;>
-        <button class="link-item border-0 bg-white" id="review-btn">
-            <div class="link-item-icon-section">
-                <img class="link-item-icon" src="/images/icon/review.png">
-            </div>
-            <div class="link-item-text">
-                <h5>리뷰 작성</h5>
+                <h5>환불 상품</h5>
             </div>
         </button>
     </div>
@@ -93,12 +93,6 @@
                             </div>
                             <div class="text-secondary" style="width: 50%; display: flex; justify-content: end">
                                 <input type="hidden" class="order-id" value="${order.id}">
-                                <c:if test="${order.status==2}">
-                                    <c:if test="${order.deliveryStatus == 3}">
-                                        <button class="refund-btn btn btn-outline-danger me-2" style="max-height: 3em">환불</button>
-                                    </c:if>
-                                    <button class="confirm-btn btn btn-outline-info me-2" style="max-height: 3em">구매 확정</button>
-                                </c:if>
                                 <button class="delivery-btn btn btn-outline-secondary" style="max-height: 3em">배송 확인</button>
                             </div>
                         </div>
@@ -110,17 +104,17 @@
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
                 <li class="page-item">
-                    <a class="page-link" href="/order/orders?pageNumber=${startPage - 1}"
+                    <a class="page-link" href="/seller/order/orders?pageNumber=${startPage - 1}"
                        aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
                 <c:forEach begin="${startPage}" end="${endPage}" step="1" var="page">
                     <li class="page-item"><a class="page-link ${page == currentPage ? 'active' : ''}"
-                                             href="/order/orders?pageNumber=${page}">${page}</a></li>
+                                             href="/seller/order/orders?pageNumber=${page}">${page}</a></li>
                 </c:forEach>
                 <li class="page-item">
-                    <a class="page-link" href="/order/orders?pageNumber=${endPage + 1}" aria-label="Next">
+                    <a class="page-link" href="/seller/order/orders?pageNumber=${endPage + 1}" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
@@ -131,70 +125,10 @@
 
 <script>
     $().ready(() => {
-
         // 배송 확인 버튼
         $(".delivery-btn").click((event) => {
             let orderId = $(event.target).parent().find(".order-id").val()
             location.href = "/order/" + orderId + "/delivery"
-        })
-
-        $(".refund-btn").click((event) => {
-            let orderId = $(event.target).parent().find(".order-id").val()
-
-            Swal.fire({
-                title: '환불사유와 배송 주소를 입력해주세요',
-                html:
-                    '<input id="address" class="swal2-input" name="reason" placeholder="환불 사유">' +
-                    '<input id="address" class="swal2-input" name="mainAddress" placeholder="주소">' +
-                    '<input id="detail-address" class="swal2-input" name="detailAddress" placeholder="상세 주소">',
-                showCancelButton: true,
-                confirmButtonText: '환불',
-                cancelButtonText: '취소',
-                showLoaderOnConfirm: true,
-                preConfirm: (isPayed) => {
-                    let mainAddress = $('input[name=mainAddress]').val()
-                    let detailAddress = $('input[name=detailAddress]').val()
-                    let reason = $('input[name=reason]').val()
-
-                    let param = {
-                        mainAddress: mainAddress,
-                        detailAddress: detailAddress,
-                        reason: reason,
-                        orderId: orderId
-                    }
-
-                    $.ajax({
-                        url: '/order/refund',
-                        type: 'post',
-                        data: param,
-                        dataType: 'json',
-                        success: function(response){
-                            let title_data = '환불이 완료되었습니다.'
-                            let message = response.message
-                            let icon_data = 'success'
-                            if (!response.success) {
-                                title_data = '환불에 실패하였습니다.'
-                                message = response.message
-                                icon_data = 'error'
-                            }
-                            Swal.fire({
-                                title: title_data,
-                                html: "<span style=\"color: #dc3545\">" + message + "</span>",
-                                icon: icon_data,
-                            }).then((result) => {
-                                if(response.success){
-                                    location.reload();
-                                }
-                            })
-
-                        },
-                        error: function(response){
-                            console.log(response)
-                        }
-                    });
-                },
-                allowOutsideClick: () => !Swal.isLoading()
-            })
         })
 
         // 구매 확정 버튼
@@ -224,7 +158,6 @@
                                     icon: 'success'
                                 }
                             ).then((result) => {
-                                console.log(result)
                                 location.reload()
                             })
                         }
@@ -233,19 +166,19 @@
             })
         })
 
-        // 주문 목록 이동 버튼
+        // 주문 목록 버튼
         $("#orders-btn").click(() => {
-            location.href = "/order/orders"
+            location.href = "/seller/order/orders"
         })
 
-        // 환불 목록 이동 버튼
+        // 주문 상품 버튼
+        $("#order-item-btn").click(() => {
+            location.href = "/seller/order/items"
+        })
+
+        // 환불 상품 버튼
         $("#refund-btn").click(() => {
-            location.href = "/order/refunds"
-        })
-
-        // 리뷰 목록 이동 버튼
-        $("#review-btn").click(() => {
-            location.href = "/order/reviews"
+            location.href = "/seller/order/refunds"
         })
     })
 </script>

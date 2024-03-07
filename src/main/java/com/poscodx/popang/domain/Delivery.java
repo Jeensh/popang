@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
 @Entity
 @Getter
 @Setter
@@ -12,6 +14,8 @@ public class Delivery {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long status;
+    private Timestamp departureDate;
+    private Timestamp arrivalDate;
 
     @OneToOne(mappedBy = "delivery", cascade = CascadeType.ALL)
     private Orders orders;

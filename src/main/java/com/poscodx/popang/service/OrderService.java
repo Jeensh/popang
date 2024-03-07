@@ -21,20 +21,149 @@ import java.util.List;
 public class OrderService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
-    private final ProductImageRepository productImageRepository;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
     private final AddressRepository addressRepository;
     private final DeliveryRepository deliveryRepository;
+    private final RefundRepository refundRepository;
+
+    // 환불 완료
+    @Transactional
+    public void finishRefund(Long deliveryId){
+        Delivery delivery = deliveryRepository.findById(deliveryId).get();
+        LocalDateTime nowDateTime = LocalDateTime.now();
+        Timestamp nowTimeStamp = Timestamp.valueOf(nowDateTime);
+        delivery.setArrivalDate(nowTimeStamp);
+        delivery.setStatus(3L);
+        deliveryRepository.save(delivery);
+
+        Refund refund = delivery.getRefund();
+        refund.setStatus(2L);
+        refund.setRefundDate(nowTimeStamp);
+        refundRepository.save(refund);
+    }
+
+    // 환불 조회
+    public RefundDTO findRefundById(Long id){
+        RefundDTO dto = new RefundDTO();
+        Refund refund = refundRepository.findById(id).get();
+        dto.setDTOByEntity(refund);
+        return dto;
+    }
+
+    // 환불 목록 조회
+    public Page<RefundDTO> findAllRefundByUser(String userId, Pageable pageable){
+        User user = userRepository.findUserById(userId);
+        return refundRepository.findAllByOrders_UserOrderByEnrollDateDesc(user, pageable)
+                .map(r -> {
+                   RefundDTO dto = new RefundDTO();
+                   dto.setDTOByEntity(r);
+                   return dto;
+                });
+    }
+
+
+    // 환불 신청
+    @Transactional
+    public void enrollRefund(Long orderId, String reason, AddressDTO addressDTO){
+        Orders order = orderRepository.findById(orderId).get();
+        LocalDateTime nowDateTime = LocalDateTime.now();
+        Timestamp nowTimeStamp = Timestamp.valueOf(nowDateTime);
+
+        // 주소 만들기
+        Address address = new Address();
+        address.setMainAddress(addressDTO.getMainAddress());
+        address.setDetailAddress(addressDTO.getDetailAddress());
+        address.setUser(order.getDelivery().getUser()); // 판매자 주소 등록하기
+        Address savedAddress = addressRepository.save(address);
+
+        // 배송 만들기
+        Delivery delivery = new Delivery();
+        delivery.setAddress(savedAddress);
+        delivery.setUser(order.getUser());
+        delivery.setStatus(1L);
+        Delivery savedDelivery = deliveryRepository.save(delivery);
+
+        // 환불 값 세팅
+        Refund refund = new Refund();
+        refund.setOrders(order);
+        refund.setStatus(1L);
+        refund.setEnrollDate(nowTimeStamp);
+        refund.setReason(reason);
+        refund.setDelivery(savedDelivery);
+        Refund savedRefund = refundRepository.save(refund);
+
+        order.setStatus(4L);
+        orderRepository.save(order);
+    }
+
+    // (판매자) 환불 중인(된) 아이템들 목록 조회
+    public Page<OrderItemDTO> findRefundItemsBySeller(String sellerId, Pageable pageable){
+        User seller = userRepository.findUserById(sellerId);
+        return orderItemRepository.findAllByProduct_SellerAndOrder_StatusOrderByIdDesc(seller, pageable, 4L)
+                .map(oi -> {
+                    OrderItemDTO dto = new OrderItemDTO();
+                    dto.setDTOByEntity(oi);
+                    Orders order = oi.getOrder();
+                    dto.setRefund(new RefundDTO());
+                    dto.getRefund().setDTOByEntity(order.getRefund());
+                    return dto;
+                });
+    }
+
+    // 리뷰 가능한 아이템 목록 조회(주문 확정 아이템들)
+    public Page<OrderItemDTO> findReviewItemsByUser(String userId, Pageable pageable){
+        User user = userRepository.findUserById(userId);
+        return orderItemRepository.findAllByOrder_UserAndOrder_StatusOrderByIdDesc(user, pageable, 3L)
+                .map(oi -> {
+                    OrderItemDTO dto = new OrderItemDTO();
+                    dto.setDTOByEntity(oi);
+                    return dto;
+                });
+    }
+
+    // (판매자) 주문 확정된 아이템들 목록 조회
+    public Page<OrderItemDTO> findOrderItemsBySeller(String sellerId, Pageable pageable){
+        User seller = userRepository.findUserById(sellerId);
+        return orderItemRepository.findAllByProduct_SellerAndOrder_StatusOrderByIdDesc(seller, pageable, 3L)
+                .map(oi -> {
+                   OrderItemDTO dto = new OrderItemDTO();
+                   dto.setDTOByEntity(oi);
+                   return dto;
+                });
+    }
+
+    // 배송 상태 바꾸기
+    @Transactional
+    public void changeDeliveryStatus(Long deliveryId, Long toStatus){
+        Delivery delivery = deliveryRepository.findById(deliveryId).get();
+        LocalDateTime nowDateTime = LocalDateTime.now();
+        Timestamp nowTimeStamp = Timestamp.valueOf(nowDateTime);
+        if(toStatus == 2){  // 배송 시작
+            delivery.setDepartureDate(nowTimeStamp);
+        }
+        else if(toStatus == 3){ // 배송 완료
+            delivery.setArrivalDate(nowTimeStamp);
+        }
+        delivery.setStatus(toStatus);
+        deliveryRepository.save(delivery);
+    }
+
 
     // 주문 상태 바꾸기
     @Transactional
     public void changeOrderStatus(Long orderId, Long status){
         Orders order = orderRepository.findById(orderId).get();
         order.setStatus(status);
-        orderRepository.save(order);
+        order = orderRepository.save(order);
+
+        // 해당 order-item들 리뷰 가능하게 하기
+        for(OrderItem oi : order.getOrderItemList()){
+            oi.setReview(1);
+            orderItemRepository.save(oi);
+        }
     }
 
     // 주문 찾기
@@ -43,6 +172,28 @@ public class OrderService {
         Orders order = orderRepository.findById(id).get();
         dto.setDTOByEntity(order);
         return dto;
+    }
+
+    // 판매자 아이디로 주문 목록 페이지
+    public Page<OrderDTO> findOrdersBySeller(String sellerId, Pageable pageable){
+        User user = userRepository.findUserById(sellerId);
+        return orderRepository.findAllByDeliveryUserOrderByOrderDateDesc(user, pageable)
+                .map(o -> {
+                    OrderDTO orderDTO = new OrderDTO();
+                    orderDTO.setDTOByEntity(o);
+                    List<OrderItemDTO> orderItemDTOList = new ArrayList<>();
+                    for(OrderItem oi : o.getOrderItemList()){
+                        OrderItemDTO orderItemDTO = new OrderItemDTO();
+                        orderItemDTO.setDTOByEntity(oi);
+                        ProductDTO productDTO = new ProductDTO();
+                        productDTO.setDTOByEntity(oi.getProduct());
+                        orderItemDTO.setProduct(productDTO);
+                        orderItemDTOList.add(orderItemDTO);
+                    }
+                    orderDTO.setDeliveryStatus(o.getDelivery().getStatus());
+                    orderDTO.setOrderItemList(orderItemDTOList);
+                    return orderDTO;
+                });
     }
 
     // 유저아이디로 주문 목록 페이지 받아오기
@@ -61,6 +212,7 @@ public class OrderService {
                         orderItemDTO.setProduct(productDTO);
                         orderItemDTOList.add(orderItemDTO);
                     }
+                    orderDTO.setDeliveryStatus(o.getDelivery().getStatus());
                     orderDTO.setOrderItemList(orderItemDTOList);
                     return orderDTO;
                 });

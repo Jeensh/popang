@@ -69,6 +69,21 @@ body{
     display: block;
 }
 
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+        left: 0;
+    }
+    100% {
+        transform: rotate(360deg);
+
+    }
+}
+
+.nav-bar-logo:active{
+    animation: spin 0.1s linear infinite;
+}
+
 .nav-bar-logo-container{
     height: 100%;
 }
@@ -397,4 +412,10 @@ body{
     border-color: dodgerblue;
     border-width: medium;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과의 크기와 색상 설정 */
+}
+
+/* 주문/배송 페이지 */
+.status-img{
+    height: 1.4em;
+    width: 1.4em;
 }

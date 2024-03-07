@@ -4,6 +4,7 @@ package com.poscodx.popang.controller;
 import com.poscodx.popang.domain.Cart;
 import com.poscodx.popang.domain.CartItem;
 import com.poscodx.popang.domain.OrderItem;
+import com.poscodx.popang.domain.User;
 import com.poscodx.popang.domain.dto.*;
 import com.poscodx.popang.service.CategoryService;
 import com.poscodx.popang.service.OrderService;
@@ -35,8 +36,144 @@ public class OrderController {
     private final OrderService orderService;
     private final int PAGE_SIZE = 8;
 
+    // 리뷰 가능한 상품 페이지 이동
+    @GetMapping("reviews")
+    public String moveToReviewItemsPage(Authentication auth, Model model, @RequestParam(defaultValue = "0") int pageNumber){
+        UserDTO login = (UserDTO) auth.getPrincipal();
+        String loginId = login.getId();
+
+        if (pageNumber <= 0) pageNumber = 1;
+        PageRequest page = PageRequest.of(pageNumber - 1, PAGE_SIZE);
+        Page<OrderItemDTO> reviewItemsPage = orderService.findReviewItemsByUser(loginId, page);
+        int totalPage = reviewItemsPage.getTotalPages();
+        long totalElement = reviewItemsPage.getTotalElements();
+        List<OrderItemDTO> reviewItemList = reviewItemsPage.getContent();
+
+        int startPage = (((pageNumber - 1) / PAGE_SIZE) * 10) + 1;
+        int endPage = Math.min(startPage + PAGE_SIZE - 1, totalPage);
+
+        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("totalElement", totalElement);
+        model.addAttribute("reviewItemList", reviewItemList);
+        model.addAttribute("currentPage", pageNumber);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
+        if (totalPage > 0 && pageNumber > totalPage)
+            return "redirect:/order/reviews?pageNumber=" + totalPage;
+        return "order/review_items";
+    }
+
+    // 환불 완료하기
+    @PostMapping("refund/delivery/finish")
+    @ResponseBody
+    public RestResponseDTO finishDelivery(Long deliveryId){
+        RestResponseDTO res = new RestResponseDTO();
+        res.setSuccess(true);
+        res.setMessage("배송 성공!");
+        orderService.finishRefund(deliveryId);
+        return res;
+    }
+
+    // 환불 배송하기
+    @PostMapping("refund/delivery/start")
+    @ResponseBody
+    public RestResponseDTO deliver(Long deliveryId){
+        RestResponseDTO res = new RestResponseDTO();
+        res.setSuccess(true);
+        res.setMessage("배송 성공!");
+        orderService.changeDeliveryStatus(deliveryId, 2L);
+        return res;
+    }
+
+    // 환불 배송 페이지 확인
+    @GetMapping("refund/{refundId}/delivery")
+    public String moveToRefundDeliveryPage(Authentication auth, @PathVariable Long refundId, Model model){
+        UserDTO login = (UserDTO) auth.getPrincipal();
+        AuthDTO authDTO = new AuthDTO();
+        authDTO.setByUserDTO(login);
+        RefundDTO refund = orderService.findRefundById(refundId);
+
+        model.addAttribute("refund", refund);
+        model.addAttribute("auth", authDTO);
+
+        return "order/delivery/refund_delivery";
+    }
+
+    // 환불 페이지 확인
+    @GetMapping("refunds")
+    public String moveToRefundsPage(Authentication auth, Model model, @RequestParam(defaultValue = "0") int pageNumber){
+        UserDTO login = (UserDTO) auth.getPrincipal();
+        String loginId = login.getId();
+
+        if (pageNumber <= 0) pageNumber = 1;
+        PageRequest page = PageRequest.of(pageNumber - 1, PAGE_SIZE);
+        Page<RefundDTO> refundPage = orderService.findAllRefundByUser(loginId, page);
+        int totalPage = refundPage.getTotalPages();
+        long totalElement = refundPage.getTotalElements();
+        List<RefundDTO> refundList = refundPage.getContent();
+
+        int startPage = (((pageNumber - 1) / PAGE_SIZE) * 10) + 1;
+        int endPage = Math.min(startPage + PAGE_SIZE - 1, totalPage);
+
+        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("totalElement", totalElement);
+        model.addAttribute("refundList", refundList);
+        model.addAttribute("currentPage", pageNumber);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
+        if (totalPage > 0 && pageNumber > totalPage)
+            return "redirect:/order/refunds?pageNumber=" + totalPage;
+        return "order/refund/refunds";
+    }
+
+    // 환불 신청
+    @PostMapping("refund")
+    @ResponseBody
+    public RestResponseDTO enrollRefund(Authentication auth, Long orderId, String reason, AddressDTO addressDTO){
+        UserDTO login = (UserDTO) auth.getPrincipal();
+        RestResponseDTO res = new RestResponseDTO();
+        res.setSuccess(true);
+        res.setMessage("환불 성공!");
+
+        // 주문 상태 검증
+        OrderDTO orderDTO = orderService.findOrderById(orderId);
+        if(orderDTO.getStatus() != 2L){
+            res.setSuccess(false);
+            res.setMessage("주문이 결제완료 상태가 아닙니다!");
+        }
+
+        // 사용자 검증
+        if(!login.getId().equals(orderDTO.getUserId())){
+            res.setSuccess(false);
+            res.setMessage("본인의 주문만 환불 할 수 있습니다!");
+        }
+
+        if(res.isSuccess()){
+            orderService.enrollRefund(orderId, reason, addressDTO);
+        }
+        return res;
+    }
+
+    // 주문 배송 페이지 확인
+    @GetMapping("{orderId}/delivery")
+    public String moveToDeliveryPage(Authentication auth, @PathVariable Long orderId, Model model){
+        UserDTO login = (UserDTO) auth.getPrincipal();
+        AuthDTO authDTO = new AuthDTO();
+        authDTO.setByUserDTO(login);
+        OrderDTO order = orderService.findOrderById(orderId);
+
+        model.addAttribute("order", order);
+        model.addAttribute("auth", authDTO);
+
+
+        return "order/delivery/delivery";
+    }
+
     // (구매자) 주문 상태변경 (결제전 -> 결제후, 결제후 -> 구매확정 or 환불)
     @PostMapping("confirm")
+    @ResponseBody
     public RestResponseDTO confirmOrder(Authentication auth, Long orderId){
         UserDTO login = (UserDTO) auth.getPrincipal();
         RestResponseDTO res = new RestResponseDTO();

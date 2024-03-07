@@ -12,4 +12,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
+    Page<OrderItem> findAllByProduct_SellerAndOrder_StatusOrderByIdDesc(User user, Pageable pageable, Long status);
+    Page<OrderItem> findAllByOrder_UserAndOrder_StatusOrderByIdDesc(User user, Pageable pageable, Long status);
 }

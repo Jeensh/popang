@@ -8,4 +8,11 @@ public class AuthDTO {
     private Long role;
     private String name;
     private Long grade;
+
+    public void setByUserDTO(UserDTO userDTO){
+        id = userDTO.getId();
+        role = userDTO.getRole();
+        name = userDTO.getName();
+        grade = userDTO.getGrade();
+    }
 }

@@ -20,7 +20,7 @@ spring:
       hibernate:
         format_sql: true
         default_batch_fetch_size: 100
-    open-in-view: false
+    open-in-view: true
 
 # 시큐리티 설정
   security:

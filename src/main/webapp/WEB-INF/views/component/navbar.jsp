@@ -19,8 +19,7 @@
         </form>
         <div class="nav-item-section ms-4">
             <a class="nav-item" href="/order/cart" id="cart" style="display: none"><img class="nav-bar-icon" src="/images/icon/empty_cart.png"></a>
-            <a class="nav-item" aria-current="page" href="/order/orders"><img class="nav-bar-icon"
-                                                                  src="/images/icon/myPage.png"></a>
+            <a class="nav-item" aria-current="page" id="myPage" style="display: none" href="/order/orders"><img class="nav-bar-icon" src="/images/icon/myPage.png"></a>
             <a class="nav-item" href="/logout"><img class="nav-bar-icon" src="/images/icon/logout.png"></a>
         </div>
     </section>
@@ -47,9 +46,11 @@
         success: function(login){
             if(login.role == 1){
                 $("#cart").css("display", "block")
+                $("#myPage").css("display", "block")
             }
             else{
                 $("#cart").remove()
+                $("#myPage").remove()
             }
         },
         error: function (response){

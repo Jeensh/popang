@@ -19,7 +19,10 @@ public class OrderDTO {
     private Long discountAmount;
     private Long status;
     private String userId;
+    private String userName;
     private Long deliveryId;
+    private Long deliveryStatus;
+    private DeliveryDTO delivery;
     private Long couponId;
     private List<OrderItemDTO> orderItemList = new ArrayList<>();
 
@@ -30,6 +33,9 @@ public class OrderDTO {
         discountAmount = order.getDiscountAmount();
         status = order.getStatus();
         userId = order.getUser().getId();
+        userName = order.getUser().getName();
+        delivery = new DeliveryDTO();
+        delivery.setDTOByEntity(order.getDelivery());
     }
 
 }
