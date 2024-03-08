@@ -18,35 +18,11 @@ public class PopangSecurityConfig {
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-
-        /**
-         *  *authorizeHttpRequests 설정*
-         *  my 으로 시작하는 URL은 접근 권한 필요
-         *  notices, contact는 누구나 접근 가능
-         *
-         */
-
-//        http.authorizeHttpRequests( (requests) -> requests
-//                        .requestMatchers("/error").permitAll()
-//                        .requestMatchers("/", "/user/auth","/user/register").permitAll()
-//                        .requestMatchers("/WEB-INF/views/index.jsp", "/WEB-INF/views/user/**").permitAll()
-//                        .requestMatchers("/css/**", "/images/**").permitAll()
-//                        .anyRequest().authenticated())
-//                .formLogin(formLogin -> formLogin
-//                        .loginPage("/")
-//                        .loginProcessingUrl("/user/auth")
-//                        .usernameParameter("id")
-//                        .passwordParameter("password")
-//                        .defaultSuccessUrl("/main")
-//                        .permitAll())
-//                .logout(logout -> logout
-//                        .logoutUrl("/logout")
-//                        .permitAll())
-//                .csrf(AbstractHttpConfigurer::disable);
-
         http.authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/error").permitAll()
-                        .requestMatchers("/**").permitAll()
+                        .requestMatchers("/error/**", "/user/**").permitAll()
+                        .requestMatchers("/rest/**", "/products/**", "/order/**", "/category/**", "/main").authenticated()
+                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/seller/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_SELLER")
                         .anyRequest().permitAll())
                 .formLogin(formLogin -> formLogin
                         .loginPage("/")
@@ -56,27 +32,7 @@ public class PopangSecurityConfig {
                         .defaultSuccessUrl("/main")
                         .permitAll())
                 .csrf(AbstractHttpConfigurer::disable);
-
         return http.build();
-
-        /**
-         *  모든 request 거절
-         *  Configuration to deny all the requests
-         */
-        /*http.authorizeHttpRequests(requests -> requests.anyRequest().denyAll())
-                .formLogin(Customizer.withDefaults())
-                .httpBasic(Customizer.withDefaults());
-        return http.build();*/
-
-        /**
-         * 	모든 request 허락
-         *  Configuration to permit all the requests
-         */
-        /*http.authorizeHttpRequests(requests -> requests.anyRequest().permitAll())
-                .formLogin(Customizer.withDefaults())
-                .httpBasic(Customizer.withDefaults());
-        return http.build();*/
-
     }
 
     @Bean

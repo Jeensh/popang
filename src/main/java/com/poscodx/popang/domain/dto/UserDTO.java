@@ -1,5 +1,6 @@
 package com.poscodx.popang.domain.dto;
 
+import com.poscodx.popang.config.MyGrantAuthority;
 import com.poscodx.popang.domain.*;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
@@ -8,9 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Data
 public class UserDTO implements UserDetails {
@@ -39,11 +38,6 @@ public class UserDTO implements UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
-    @Override
     public String getUsername() {
         return null;
     }
@@ -66,5 +60,19 @@ public class UserDTO implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        // role에 따라 권한 추가
+        if (role.equals(1L)) {
+            authorities.add(new MyGrantAuthority("ROLE_USER"));
+        } else if (role.equals(2L)) {
+            authorities.add(new MyGrantAuthority("ROLE_SELLER"));
+        } else if (role.equals(3L)) {
+            authorities.add(new MyGrantAuthority("ROLE_ADMIN"));
+        }
+        return authorities;
     }
 }
