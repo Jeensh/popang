@@ -22,6 +22,9 @@ public class Product {
     private String description;
     private String descriptionDetail;
     private Timestamp uploadDate;
+    private Long view;
+    private Long sales;
+    private Double score;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id")

@@ -3,10 +3,12 @@ package com.poscodx.popang.controller;
 import com.poscodx.popang.domain.ProductCategory;
 import com.poscodx.popang.domain.dto.BannerDTO;
 import com.poscodx.popang.domain.dto.ProductCategoryDTO;
+import com.poscodx.popang.domain.dto.ProductDTO;
 import com.poscodx.popang.domain.dto.UserDTO;
 import com.poscodx.popang.repository.CategoryRepository;
 import com.poscodx.popang.service.BannerService;
 import com.poscodx.popang.service.CategoryService;
+import com.poscodx.popang.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -25,6 +27,7 @@ public class HomeController {
 
     private final BannerService bannerService;
     private final CategoryService categoryService;
+    private final ProductService productService;
 
     @GetMapping("/")
     public String moveLoginPage(){
@@ -46,7 +49,14 @@ public class HomeController {
             }
             default: {
                 List<BannerDTO> bannerList = bannerService.findAll();
+                List<ProductDTO> topScores = productService.findTop5Score();
+                List<ProductDTO> topViews = productService.findTop5View();
+                List<ProductDTO> topSales = productService.findTop5Sales();
+
                 model.addAttribute("bannerList", bannerList);
+                model.addAttribute("topScores", topScores);
+                model.addAttribute("topViews", topViews);
+                model.addAttribute("topSales", topSales);
                 return "main/main";
             }
         }

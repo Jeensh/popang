@@ -33,8 +33,69 @@
     </section>
 </header>
 <section class="main-body-section ">
-    <section class="main-body bg-light-subtle">
-        <section class="main-content-section">
+    <section class="main-body bg-light-subtle" style="display: flex; flex-direction: column; align-items: center">
+        <section class="main-content-section rounded-3 border-2" style="background-color: #EDEEF0; width: 95%; margin-top: 1em; padding: 5px">
+            <div style="display: flex; justify-content: center; margin-top:1em">
+                <h1 style="font-weight: bold">< 판매량 <span style="color: orangered">TOP 5</span> ></h1>
+            </div>
+            <div class="row row-cols-1 row-cols-md-3 g-4" style="display: flex; justify-content: center">
+                <c:forEach items="${topSales}" var="item">
+                    <div class="col" style="width: 30%; height: 50%">
+                        <div class="product-card card" style="width: 100%; height: 400px">
+                            <a href="/products/${item.id}" style="height: 65%"><img src="${item.imageList[0].imageAddress}" class="card-img-top" alt="..." style="height: 100%"></a>
+                            <div class="card-body" style="height: 35%">
+                                <h5 class="card-title">${item.name}</h5>
+                                <p class="product-card-body" style="height: 80%">
+                                    <span style="color: red; font-weight: bold">평점 : </span><span style="color: gold">${item.score}</span><br>
+                                    <span style="color: orangered; font-weight: bold">가격 : </span><span style="color: #dc3545">${item.price}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </c:forEach>
+            </div>
+        </section>
+        <section class="main-content-section rounded-3 border-2" style="background-color: #EDE1E3; width: 95%; margin-top: 1em; padding: 5px">
+            <div style="display: flex; justify-content: center; margin-top:1em">
+                <h1 style="font-weight: bold">< 평점 <span style="color: orangered">TOP 5</span> ></h1>
+            </div>
+            <div class="row row-cols-1 row-cols-md-3 g-4" style="display: flex; justify-content: center">
+                <c:forEach items="${topScores}" var="item">
+                    <div class="col" style="width: 30%; height: 50%">
+                        <div class="product-card card" style="width: 100%; height: 400px">
+                            <a href="/products/${item.id}" style="height: 65%"><img src="${item.imageList[0].imageAddress}" class="card-img-top" alt="..." style="height: 100%"></a>
+                            <div class="card-body" style="height: 35%">
+                                <h5 class="card-title">${item.name}</h5>
+                                <p class="product-card-body" style="height: 80%">
+                                    <span style="color: red; font-weight: bold">평점 : </span><span style="color: gold">${item.score}</span><br>
+                                    <span style="color: orangered; font-weight: bold">가격 : </span><span style="color: #dc3545">${item.price}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </c:forEach>
+            </div>
+        </section>
+        <section class="main-content-section rounded-3 border-2" style="background-color: #D1DFE8; width: 95%; margin-top: 1em; padding: 5px">
+            <div style="display: flex; justify-content: center; margin-top:1em">
+                <h1 style="font-weight: bold">< 조회수 <span style="color: orangered">TOP 5</span> ></h1>
+            </div>
+            <div class="row row-cols-1 row-cols-md-3 g-4" style="display: flex; justify-content: center">
+                <c:forEach items="${topViews}" var="item">
+                    <div class="col" style="width: 30%; height: 50%">
+                        <div class="product-card card" style="width: 100%; height: 400px">
+                            <a href="/products/${item.id}" style="height: 65%"><img src="${item.imageList[0].imageAddress}" class="card-img-top" alt="..." style="height: 100%"></a>
+                            <div class="card-body" style="height: 35%">
+                                <h5 class="card-title">${item.name}</h5>
+                                <p class="product-card-body" style="height: 80%">
+                                    <span style="color: red; font-weight: bold">평점 : </span><span style="color: gold">${item.score}</span><br>
+                                    <span style="color: orangered; font-weight: bold">가격 : </span><span style="color: #dc3545">${item.price}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </c:forEach>
+            </div>
         </section>
     </section>
 </section>

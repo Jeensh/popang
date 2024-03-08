@@ -5,6 +5,7 @@ import com.poscodx.popang.domain.ProductCategory;
 import com.poscodx.popang.domain.ProductImage;
 import com.poscodx.popang.domain.User;
 import com.poscodx.popang.domain.dto.ProductDTO;
+import com.poscodx.popang.domain.dto.ReplyDTO;
 import com.poscodx.popang.domain.dto.UserDTO;
 import com.poscodx.popang.repository.CategoryRepository;
 import com.poscodx.popang.repository.ProductImageRepository;
@@ -34,6 +35,44 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
 
+    public List<ProductDTO> findTop5Sales(){
+        return productRepository.findTop5ByOrderBySalesDesc()
+                .stream().map(p -> {
+                    ProductDTO dto = new ProductDTO();
+                    dto.setDTOByEntity(p);
+                    dto.setImageList(p.getImageList());
+                    return dto;
+                }).toList();
+    }
+
+    public List<ProductDTO> findTop5View(){
+        return productRepository.findTop5ByOrderByViewDesc()
+                .stream().map(p -> {
+                    ProductDTO dto = new ProductDTO();
+                    dto.setDTOByEntity(p);
+                    dto.setImageList(p.getImageList());
+                    return dto;
+                }).toList();
+    }
+
+    public List<ProductDTO> findTop5Score(){
+        return productRepository.findTop5ByOrderByScoreDesc()
+                .stream().map(p -> {
+                    ProductDTO dto = new ProductDTO();
+                    dto.setDTOByEntity(p);
+                    dto.setImageList(p.getImageList());
+                    return dto;
+                }).toList();
+    }
+
+    // 뷰 증가
+    @Transactional
+    public void increaseProductView(Long productId){
+        Product product = productRepository.findProductById(productId);
+        product.setView(product.getView() + 1);
+        productRepository.save(product);
+    }
+
     public Page<ProductDTO> findAllByCategoryAndNameContaining(String keyword, Long categoryCode, Pageable pageable) {
         Page<Product> pages;
         if (categoryCode == 0)
@@ -58,6 +97,12 @@ public class ProductService {
         dto.setImageList(product.getImageList());
         dto.setDTOByEntity(product);
         dto.setSellerName(product.getSeller().getName());
+        List<ReplyDTO> replyList = product.getReplyList().stream().map(r -> {
+            ReplyDTO rdto = new ReplyDTO();
+            rdto.setDTOByEntity(r);
+            return rdto;
+        }).toList();
+        dto.setReplyList(replyList);
         return dto;
     }
 

@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @EntityGraph(attributePaths = {"imageList"})
@@ -25,6 +27,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @EntityGraph(attributePaths = {"imageList"})
     Page<Product> findAllByCategoryAndNameContaining(ProductCategory category, String keyword, Pageable pageable);
+
+    List<Product> findTop5ByOrderBySalesDesc();
+    List<Product> findTop5ByOrderByViewDesc();
+    List<Product> findTop5ByOrderByScoreDesc();
 
     void deleteById(Long id);
 

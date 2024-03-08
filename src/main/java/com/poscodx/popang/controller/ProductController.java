@@ -1,10 +1,7 @@
 package com.poscodx.popang.controller;
 
 
-import com.poscodx.popang.domain.dto.ProductCategoryDTO;
-import com.poscodx.popang.domain.dto.ProductDTO;
-import com.poscodx.popang.domain.dto.RestResponseDTO;
-import com.poscodx.popang.domain.dto.UserDTO;
+import com.poscodx.popang.domain.dto.*;
 import com.poscodx.popang.service.CategoryService;
 import com.poscodx.popang.service.ProductService;
 import com.poscodx.popang.service.UserService;
@@ -30,6 +27,20 @@ public class ProductController {
     private final CategoryService categoryService;
     private final UserService userService;
     private static final int PAGE_SIZE = 12;
+
+    @PostMapping("/{productId}/view")
+    public RestResponseDTO increaseProductView(Authentication auth, @PathVariable Long productId){
+        UserDTO login = (UserDTO) auth.getPrincipal();
+        RestResponseDTO res = new RestResponseDTO();
+        res.setSuccess(true);
+        if(productService.findById(productId).getId() == null)
+            res.setSuccess(false);
+        if(login.getRole() != 1)
+            res.setSuccess(false);
+        if(res.isSuccess())
+            productService.increaseProductView(productId);
+        return res;
+    }
 
     @GetMapping("/{productId}")
     public String moveProductDetailPage(Authentication auth, Model model, @PathVariable Long productId){

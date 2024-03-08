@@ -147,6 +147,9 @@ public class SellerOrderController {
 
         if (totalPage > 0 && pageNumber > totalPage)
             return "redirect:/seller/order/orders?pageNumber=" + totalPage;
-        return "order/seller/orders";
+        if(login.getRole() == 2)
+            return "order/seller/orders";
+        else
+            return "order/admin/orders";
     }
 }

@@ -39,17 +39,19 @@
                 </section>
                 <section class="product-info product-info-summary" style="width: 45%; margin-top: 1.5em; height: 32vw">
                     <div style="display: flex; justify-content: center; margin: 1em">
-                        <span style="font-weight: bold; font-size: xx-large; color: black" id="product-name">${product.name}</span>
+                        <span style="font-weight: bold; font-size: xx-large; color: black"
+                              id="product-name">${product.name}</span>
                     </div>
                     <hr color="black" size="5" width="105.5%">
                     <div style="font-size: large; margin-left: 2em">
-                        <p><span style="font-size: x-large; font-weight: bold">가격 : </span><span
+                        <p><span style="font-size: large; font-weight: bold">평점 : </span><span style="color: gold">${product.score}</span></p>
+                        <p><span style="font-size: large; font-weight: bold">가격 : </span><span
                                 style="color: red" id="product-price">${product.price}</span></p>
-                        <p><span style="font-size: x-large; font-weight: bold">재고 : </span><span
+                        <p><span style="font-size: large; font-weight: bold">재고 : </span><span
                                 style="color: green">${product.stock}</span></p>
-                        <p><span style="font-size: x-large; font-weight: bold">판매자 : </span><span
+                        <p><span style="font-size: large; font-weight: bold">판매자 : </span><span
                                 style="color: blue">${product.sellerName}</span></p>
-                        <p><span style="font-size: x-large; font-weight: bold">요약 : </span>${product.description}</p>
+                        <p><span style="font-size: large; font-weight: bold">요약 : </span>${product.description}</p>
                     </div>
                     <c:if test="${role == 1}">
                         <form class="product-order-section" id="product-order-form" method="post"
@@ -80,8 +82,26 @@
                     <section id="product-detail-section">
                         ${product.descriptionDetail}
                     </section>
-                    <section id="product-review-section" style="display: none">
-                        리뷰 섹션
+                    <section id="product-review-section" style="display: none; width: 100%">
+                        <div class="mt-2" style="width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center">
+                            <c:forEach items="${product.replyList}" var="reply">
+                                <div class="card mb-2" style="width: 70%">
+                                    <div class="card-header">
+                                        작성자 : ${reply.userName}
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title"><span style="font-size: x-large;">평점 : </span> <span style="color: gold">${reply.score}</span></h5>
+                                        <p class="card-text">
+                                            <span style="font-weight: bold; font-size: large">내용 : </span><br>
+                                            ${reply.content}
+                                        </p>
+                                    </div>
+                                    <div class="card-footer text-body-secondary">
+                                        작성 날짜 : ${reply.uploadDate}
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </div>
                     </section>
                 </section>
             </section>
@@ -98,6 +118,17 @@
         productId = $('#product-id').val()
         productName = $('#product-name').text()
         price = $('#product-price').text()
+
+        // 조회수 증가
+        $.ajax({
+            url: '/products/' + productId + '/view',
+            type: 'post',
+            dataType: 'json',
+            success: function (response) {
+            },
+            error: function (response) {
+            }
+        });
 
         // 장바구니 버튼
         $('#add-cart-btn').click(() => {
@@ -132,7 +163,7 @@
                         type: 'post',
                         data: param,
                         dataType: 'json',
-                        success: function(response){
+                        success: function (response) {
                             let title_data = '장바구니에 상품이 추가되었습니다.'
                             let message = response.message
                             let icon_data = 'success'
@@ -146,13 +177,13 @@
                                 html: "<span style=\"color: #dc3545\">" + message + "</span>",
                                 icon: icon_data,
                             }).then((result) => {
-                                if(response.success){
+                                if (response.success) {
                                     // location.href = "/seller/product/management?pageNumber=1"
                                 }
                             })
 
                         },
-                        error: function(response){
+                        error: function (response) {
                             console.log(response)
                         }
                     });
@@ -203,7 +234,7 @@
                         type: 'post',
                         data: param,
                         dataType: 'json',
-                        success: function(response){
+                        success: function (response) {
                             let title_data = '구매가 완료되었습니다.'
                             let message = response.message
                             let icon_data = 'success'
@@ -217,13 +248,12 @@
                                 html: "<span style=\"color: #dc3545\">" + message + "</span>",
                                 icon: icon_data,
                             }).then((result) => {
-                                if(response.success){
+                                if (response.success) {
                                     location.reload();
                                 }
                             })
-
                         },
-                        error: function(response){
+                        error: function (response) {
                             console.log(response)
                         }
                     });

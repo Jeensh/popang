@@ -25,14 +25,20 @@ public class ProductDTO {
     private Long categoryCode;
     private String sellerId;
     private String sellerName;
+    private Long view;
+    private Long sales;
+    private Double score;
 
-    private List<Reply> replyList = new ArrayList<>();
+    private List<ReplyDTO> replyList = new ArrayList<>();
     private List<ProductImage> imageList = new ArrayList<>();
 
     public void setDTOByEntity(Product product){
         id = product.getId();
         name = product.getName();
         price = product.getPrice();
+        view = product.getView();
+        sales = product.getSales();
+        score = product.getScore();
         stock = product.getStock();
         description = product.getDescription();
         descriptionDetail = product.getDescriptionDetail();

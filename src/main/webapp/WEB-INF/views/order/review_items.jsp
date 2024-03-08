@@ -73,10 +73,15 @@
                                 </div>
                             </div>
                             <div class="card-body" style="display: flex; justify-content: end; width: 50%">
+                                <input type="hidden" name="order-item-id" value="${item.id}">
+                                <input type="hidden" name="productId" value="${item.product.id}">
                                 <c:if test="${item.review == 1}">
-                                    <button class="btn btn-outline-success" style="max-height: 10em">리뷰 작성</button>
+                                    <button class="review-btn btn btn-outline-success" style="max-height: 10em">리뷰 작성
+                                    </button>
                                 </c:if>
-                                <a class="btn btn-outline-info ms-2" href="/products/${item.product.id}" style="max-height: 10em; text-align: center; display: flex; justify-content: center; align-items: center;">상품 상세</a>
+                                <a class="btn btn-outline-info ms-2" href="/products/${item.product.id}"
+                                   style="max-height: 10em; text-align: center; display: flex; justify-content: center; align-items: center;">상품
+                                    상세</a>
                             </div>
                         </section>
                         <div class="card-footer bg-transparent border-success">주문 날짜 : ${item.orderDate}</div>
@@ -108,6 +113,53 @@
 
 <script>
     $().ready(() => {
+        // 리뷰 작성 버튼
+        $(".review-btn").click((event) => {
+            let productId = $(event.target).prev().val()
+            let orderItemId = $(event.target).prev().prev().val()
+
+
+            Swal.fire({
+                title: '리뷰 작성',
+                html: '<div style="display: flex; flex-direction: column; justify-content: center; align-items: center">' +
+                    '<label for="score" class="form-label">평점</label>' +
+                    '<input type="range" name="score" class="form-range" min="0" max="10" step="1" id="score" style="width: 80%">' +
+                    '<div class="form-floating" style="width: 80%">' +
+                    '<textarea class="form-control" placeholder="Leave a comment here" name="content" id="content"></textarea>' +
+                    '<label for="content">코멘트</label>' +
+                    '</div>' +
+                    '</div>',
+                showCancelButton: true,
+                confirmButtonText: '저장',
+                cancelButtonText: '취소',
+                preConfirm: function () {
+                    let score = $('input[name=score]').val()
+                    let content = $('textarea[name=content]').val()
+                    $.ajax({
+                        url: '/order/review/write',
+                        type: 'post',
+                        data: {
+                            score: score,
+                            content: content,
+                            productId: productId,
+                            orderItemId: orderItemId
+                        },
+                        dataType: 'json',
+                        success: function (response) {
+                            Swal.fire({
+                                    title: "리뷰 작성 완료!",
+                                    text: response.message,
+                                    icon: 'success'
+                                }
+                            ).then((result) => {
+                                location.reload()
+                            })
+                        }
+                    });
+                }
+            })
+        });
+
         // 주문 목록 이동 버튼
         $("#orders-btn").click(() => {
             location.href = "/order/orders"

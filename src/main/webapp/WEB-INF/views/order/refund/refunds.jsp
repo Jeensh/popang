@@ -75,7 +75,7 @@
                         </div>
                         <div class="card-body" style="display: flex; justify-content: start">
                             <div class="text-secondary" style="width: 50%">
-                                <h5 class="card-title">환불 내용</h5>
+                                <h5 class="card-title">환불 사유 : ${refund.reason}</h5>
                                 <p class="card-text">
                                     <span style="color: orangered; font-size: large;">환불 신청일 : </span>
                                     <c:if test="${refund.enrollDate == null}">

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class Reply {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
     private String content;
-    private Date uploadDate;
+    private Timestamp uploadDate;
     private Long score;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -32,4 +33,8 @@ public class Reply {
 
     @OneToMany(mappedBy = "reply")
     private List<ReplyImage> imageList = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 }

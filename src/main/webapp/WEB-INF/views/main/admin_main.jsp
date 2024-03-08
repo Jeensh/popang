@@ -51,12 +51,12 @@
                     </a>
                 </div>
                 <div class="link-item-wrapper bg-body-secondary col-lg-4 col-md-4 col-sm-6 col-12 border">
-                    <a href="#">
+                    <a href="/seller/order/orders">
                         <div class="link-item-icon-section">
-                            <img class="link-item-icon" src="/images/icon/undefined.png">
+                            <img class="link-item-icon" src="/images/icon/order.png">
                         </div>
                         <div class="link-item-text">
-                            <h5>준비중</h5>
+                            <h5>주문 관리</h5>
                         </div>
                     </a>
                 </div>

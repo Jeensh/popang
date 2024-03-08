@@ -244,6 +244,7 @@ public class OrderService {
             OrderItem orderItem = new OrderItem();
             Product product = productRepository.findProductById(item.getProductId());
             product.setStock(product.getStock() - item.getCount());
+            product.setSales(product.getSales() + item.getCount());
             productRepository.save(product);
 
             orderItem.setProduct(product);
@@ -369,6 +370,7 @@ public class OrderService {
         User user = userRepository.findUserById(userId);
         Product product = productRepository.findProductById(orderItemDTO.getProductId());
         product.setStock(product.getStock() - orderItemDTO.getCount());
+        product.setSales(product.getSales() + orderItemDTO.getCount());
         productRepository.save(product);
 
         // 주소 만들기

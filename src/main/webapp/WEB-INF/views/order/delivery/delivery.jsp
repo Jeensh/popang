@@ -27,27 +27,27 @@
         </button>
     </div>
     <c:if test="${auth.role == 2}">
-    <div class="link-item-wrapper" style="width: fit-content; height: fit-content" ;>
-        <button class="link-item border-0 bg-white" id="order-item-btn">
-            <div class="link-item-icon-section">
-                <img class="link-item-icon" src="/images/icon/product.png">
-            </div>
-            <div class="link-item-text">
-                <h5>주문 상품</h5>
-            </div>
-        </button>
-    </div>
+        <div class="link-item-wrapper" style="width: fit-content; height: fit-content" ;>
+            <button class="link-item border-0 bg-white" id="order-item-btn">
+                <div class="link-item-icon-section">
+                    <img class="link-item-icon" src="/images/icon/product.png">
+                </div>
+                <div class="link-item-text">
+                    <h5>주문 상품</h5>
+                </div>
+            </button>
+        </div>
+        <div class="link-item-wrapper" style="width: fit-content; height: fit-content" ;>
+            <button class="link-item border-0 bg-white" id="refund-btn">
+                <div class="link-item-icon-section">
+                    <img class="link-item-icon" src="/images/icon/refund.png">
+                </div>
+                <div class="link-item-text">
+                    <h5>환불 목록</h5>
+                </div>
+            </button>
+        </div>
     </c:if>
-    <div class="link-item-wrapper" style="width: fit-content; height: fit-content" ;>
-        <button class="link-item border-0 bg-white" id="refund-btn">
-            <div class="link-item-icon-section">
-                <img class="link-item-icon" src="/images/icon/refund.png">
-            </div>
-            <div class="link-item-text">
-                <h5>환불 목록</h5>
-            </div>
-        </button>
-    </div>
 </section>
 <section class="main-body-section ">
     <section class="main-body bg-light-subtle">
@@ -62,9 +62,12 @@
                     배송 번호 : ${order.delivery.id}
                     (
                     <c:choose>
-                        <c:when test="${order.delivery.status == 1}">배송 전 <img class="status-img" src="/images/icon/packaging.png"></c:when>
-                        <c:when test="${order.delivery.status == 2}">배송 중 <img class="status-img" src="/images/icon/delivering.png"></c:when>
-                        <c:when test="${order.delivery.status == 3}">배송 완료 <img class="status-img" src="/images/icon/delivered.png"></c:when>
+                        <c:when test="${order.delivery.status == 1}">배송 전 <img class="status-img"
+                                                                               src="/images/icon/packaging.png"></c:when>
+                        <c:when test="${order.delivery.status == 2}">배송 중 <img class="status-img"
+                                                                               src="/images/icon/delivering.png"></c:when>
+                        <c:when test="${order.delivery.status == 3}">배송 완료 <img class="status-img"
+                                                                                src="/images/icon/delivered.png"></c:when>
                     </c:choose>
                     )
                     <c:if test='${order.delivery.sender.id == auth.id}'>
@@ -206,7 +209,7 @@
         $("#orders-btn").click(() => {
             let role = $("#user-role").val()
             console.log(role)
-            if(role == 1)
+            if (role == 1)
                 location.href = "/order/orders"
             else
                 location.href = "/seller/order/orders"
@@ -221,7 +224,7 @@
         $("#refund-btn").click(() => {
             let role = $("#user-role").val()
             console.log(role)
-            if(role == 1)
+            if (role == 1)
                 location.href = "/order/refunds"
             else
                 location.href = "/seller/order/refunds"

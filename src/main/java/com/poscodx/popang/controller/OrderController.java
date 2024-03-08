@@ -6,10 +6,7 @@ import com.poscodx.popang.domain.CartItem;
 import com.poscodx.popang.domain.OrderItem;
 import com.poscodx.popang.domain.User;
 import com.poscodx.popang.domain.dto.*;
-import com.poscodx.popang.service.CategoryService;
-import com.poscodx.popang.service.OrderService;
-import com.poscodx.popang.service.ProductService;
-import com.poscodx.popang.service.UserService;
+import com.poscodx.popang.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -34,7 +31,20 @@ public class OrderController {
     private final CategoryService categoryService;
     private final UserService userService;
     private final OrderService orderService;
+    private final ReplyService replyService;
     private final int PAGE_SIZE = 8;
+
+    // 초기 리뷰 작성
+    @PostMapping("review/write")
+    @ResponseBody
+    public RestResponseDTO writeReview(Authentication auth, ReplyDTO replyDTO, Long orderItemId){
+        RestResponseDTO res = new RestResponseDTO();
+        res.setSuccess(true);
+        res.setMessage("리뷰가 등록되었습니다!");
+        UserDTO login = (UserDTO) auth.getPrincipal();
+        replyService.writeReview(replyDTO, login.getId(), replyDTO.getProductId(), orderItemId);
+        return res;
+    }
 
     // 리뷰 가능한 상품 페이지 이동
     @GetMapping("reviews")

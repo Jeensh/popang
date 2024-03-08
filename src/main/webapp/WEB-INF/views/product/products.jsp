@@ -36,7 +36,8 @@
                             <div class="product-card-body card-body" style="width: 90%; height: 40%">
                                 <h5 class="card-title">${product.name}</h5>
                                 <p class="product-card-body" style="max-height: 3em">${product.description}</p>
-                                <p class="product-card-body" style="max-height: 1.5em"><span style="color: #dc3545; font-weight: bold">가격 : </span>${product.price}</p>
+                                <p class="product-card-body" style="max-height: 1.5em"><span style="color: red; font-weight: bold">평점 : </span><span style="color: gold">${product.score}</span></p>
+                                <p class="product-card-body" style="max-height: 1.5em"><span style="color: orangered; font-weight: bold">가격 : </span><span style="color: #dc3545">${product.price}</span></p>
                             </div>
                             <div class="card-footer" style="height: 10%">
                                 <small class="text-body-secondary">판매자 : ${product.sellerName}</small>
